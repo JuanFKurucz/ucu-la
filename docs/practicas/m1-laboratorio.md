@@ -8,7 +8,7 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_python_de_cero.ipynb) Cuaderno de la clase 1: Python desde cero.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_laboratorio.ipynb) Abrir el cuaderno en Colab (para quien no tiene el entorno instalado).
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_laboratorio.ipynb) Abrir el cuaderno en Colab (el lab de esta práctica).
 
 
 ## Objetivo
@@ -18,30 +18,24 @@
 
 ## Punto de partida
 
-- **Lab:** `labs/m1_comportamiento.py`, en **marimo** (un cuaderno que se actualiza solo).
-- **Temperatura:** solo cambia algo con `google_genai:gemini-3.1-flash-lite` (o `ollama:qwen3.5:2b`, si lo tenés). Gemini 3.5 Flash-Lite (el de `config.toml`) la ignora: por eso el experimento 1 cambia el modelo.
+- **Lab:** el cuaderno de Colab de esta práctica (botón «Open in Colab», arriba). Corre en el navegador: no instalás nada.
+- **Clave:** la de Gemini, en los **Secretos** de Colab (la llave de la izquierda), como en el cuaderno de Python.
+- **Temperatura:** solo cambia algo con `google_genai:gemini-3.1-flash-lite`, el modelo del lab (`MODELO_T`). Gemini 3.5 Flash-Lite la ignora.
 - **Decidís:** experimento y predicción, antes de correr.
-- **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque
 
-1. En la carpeta del proyecto:
+1. Abrí el lab y corré las celdas en orden con **Shift + Enter** hasta «Experimento 1».
+2. Escribí tu predicción en `PREDICCION` y corré la celda de `correr(...)`.
+3. **Qué deberías ver:** una tabla con cada respuesta y sus tokens, y `T=0.0: 1 distintas de 5`.
 
-    ```bash
-    uv run marimo edit labs/m1_comportamiento.py
-    ```
+**Primer control · 10–15 min:** tabla con las respuestas y sus tokens.
 
-2. **Qué deberías ver:** los tres pasos (predecí, corré, anotá), los dos experimentos, «Tu predicción» y los controles: «Modelo», «Prompt», Temperatura, Repeticiones y «Correr». Escribí tu predicción y tocá «Correr».
-
-    ![El lab al abrirlo: pasos, experimentos, predicción y controles](../assets/lab-m1-completo.png)
-
-**Primer control · 10–15 min:** tabla con 3 respuestas y sus tokens; «llamadas usadas en esta corrida»: 3.
-
-- **Saldo:** una llamada por repetición. Tope: 20 por persona (lo pone el lab). Experimento 1: 10; experimento 2: 2.
+- **Saldo:** una llamada por repetición. Tope: 20 por persona (`TOPE`, lo pone el lab). Experimento 1: 10; experimento 2: 2.
 
 <details markdown="1"><summary>¿Sale un error?</summary>
 
-- **No abre el lab:** pegá en el navegador la dirección `http://localhost:…` que muestra la terminal.
+- **«No pude leer el secreto GOOGLE_API_KEY»:** el secreto se llama exactamente así y tiene activado **Acceso del notebook**.
 - **«503»:** Gemini está saturado, no es tu código. Esperá un minuto o hacé el experimento 2.
 - **Otro mensaje:** copialo tal cual en el foro «Consultas» del aula virtual.
 
@@ -53,11 +47,11 @@ Elegí **uno**:
 
 | # | Qué cambiás | Qué mirás |
 |---|---|---|
-| 1 | En «Modelo», `google_genai:gemini-3.1-flash-lite`. Al prompt sumale «Respondé solo el nombre.». Temperatura 0 y después 1, 5 repeticiones cada una | ¿Cuántas distintas, de 5? |
-| 2 | La misma frase (15+ palabras) en español y en inglés, 1 repetición | ¿Tokens de entrada? ¿El español usa más? |
+| 1 | `TEMPERATURA` 0 y después 1, con `REPETICIONES = 5` | ¿Cuántas distintas, de 5? |
+| 2 | La misma frase en español y en inglés (`ES` y `EN`), 1 llamada cada una | ¿Tokens de entrada? ¿El español usa más? |
 
-1. **Predecí** por escrito, en «Tu predicción» del lab.
-2. **Corré** y anotá antes de mover otro control (la tabla se borra).
+1. **Predecí** por escrito, en `PREDICCION`.
+2. **Corré** y anotá antes de cambiar otra perilla.
 3. **Cambiá una sola cosa** y corré de nuevo.
 4. **Explicá** con el cuaderno: ejercicios 7 y 9 (temperatura) u 8 (tokens). Con 0 y distintas no es error: en una API, 0 no garantiza lo mismo.
 
@@ -73,7 +67,7 @@ Una fila: **predicción · resultado · explicación**. Ej.: «Predije 5 iguales
 
 ## Evidencia
 
-En `evidencia/m1.md` (sin nota; plantilla):
+En `evidencia/m1.md` de tu repo (sin nota):
 
 - La fila del experimento y una frase «Esto **no** demuestra que…».
 - Tu **diagnóstico** del cuaderno: la última celda lo arma sola con lo que te salió.

@@ -11,66 +11,102 @@
 
 ## Objetivo
 
-- Un programa que pregunta sobre **tu tema**, guarda respuesta, tokens y tiempo, y no se cae.
-- Elegís configuración y estimás costo. Es la **v0.1**.
+- Escribís tu **v0.1**: un programa que le pregunta al modelo sobre **tu tema**, guarda respuesta, tokens y tiempo, y no se cae si algo falla.
+- Comparás dos configuraciones, **una cosa por vez**, y estimás el costo.
 
 ## Punto de partida
 
-- **Archivo:** `v01_api.py`. **Perillas:** `SISTEMA`, `PREGUNTAS`, `REINTENTOS`.
-- **Registro:** `logs/v01.jsonl`, un renglón por pregunta.
+- **Tu repo** del proyecto. Creás `v01_api.py` en la carpeta del proyecto, al lado de `llm.py`.
+- **El contrato** (README de tu repo): `responder(pregunta)` devuelve un `dict` con `respuesta`, `tokens_entrada`, `tokens_salida` y `latencia_s`; cada pregunta deja un renglón en `logs/v01.jsonl`.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
+- **IA:** podés pedirle ayuda a un asistente, pero cada renglón lo tenés que poder explicar.
 
 ## Arranque
 
-1. Corré:
+1. **Las perillas.** Arriba de todo, el mensaje del sistema y tus preguntas: cambiá las de ejemplo por **5 de tu tema**, cada una entre comillas y separadas con coma.
 
-    ```bash
-    uv run python v01_api.py
+    ```python
+    import json, os, time
+    from llm import cargar_modelo, explicar, nombre_modelo, sin_claves
+    SISTEMA = "Sos un asistente para estudiantes. Respondé en español, en dos frases como máximo."
+    PREGUNTAS = ["¿Qué es un token en un LLM?", "¿Qué es una alucinación en un LLM?"]
+    modelo = cargar_modelo()  # el de config.toml
     ```
 
-2. **Qué deberías ver:** cada pregunta con `>`, la respuesta de a poco, `tokens={…} latencia=…s` y al final `Error controlado: …` (un error a propósito: el programa no se cae).
+    Corré `uv run python v01_api.py`. **Qué deberías ver:** nada, sin errores. Si falta la clave o `config.toml` está mal escrito, `cargar_modelo()` te lo dice en castellano.
 
-**Primer control · 10–15 min:** el log tiene modelo, tokens y latencia.
+2. **`responder()`.** Abajo, la función: manda la pregunta, muestra la respuesta de a pedazos (*streaming*), los junta y mide.
+
+    ```python
+    def responder(pregunta: str) -> dict:
+       inicio, junta = time.perf_counter(), None
+       for pedazo in modelo.stream([("system", SISTEMA), ("human", pregunta)]):
+           print(pedazo.text, end="", flush=True)  # la respuesta aparece de a poco
+           junta = pedazo if junta is None else junta + pedazo  # y se va juntando
+       print()
+       return {"respuesta": junta.text, "latencia_s": round(time.perf_counter() - inicio, 2),
+               "tokens_entrada": junta.usage_metadata["input_tokens"], "tokens_salida": junta.usage_metadata["output_tokens"]}
+    ```
+
+    Agregá al final `print(responder(PREGUNTAS[0]))` y corré. **Qué deberías ver:** la respuesta, de a poco, y abajo algo como `{'respuesta': '…', 'latencia_s': 1.2, 'tokens_entrada': 31, 'tokens_salida': 40}`.
+
+3. **Las 5 y el log.** Cambiá ese `print` por el bucle: cada pregunta tiene un reintento si falla, y su resultado (o su error) queda en un renglón de `logs/v01.jsonl`.
+
+    ```python
+    os.makedirs("logs", exist_ok=True)  # la primera vez no existe
+    for pregunta in PREGUNTAS:
+       print("\n>", pregunta)
+       for intento in (1, 2):  # el primero y un reintento
+           try:
+               fila = responder(pregunta)
+               break
+           except Exception as error:  # cuota, red, un modelo que no existe…
+               fila = {"error": type(error).__name__, "detalle": sin_claves(str(error))[:200]}
+               print(f"  Error (intento {intento} de 2):", explicar(error) or fila["error"])
+               time.sleep(2)  # un 429 al instante vuelve a fallar
+       with open("logs/v01.jsonl", "a", encoding="utf-8") as log:  # "a": agrega, no borra
+           log.write(json.dumps({"modelo": nombre_modelo(), "sistema": SISTEMA, "pregunta": pregunta, **fila},
+                                ensure_ascii=False) + "\n")
+    ```
+
+    **Qué deberías ver:** las 5 respuestas, cada una debajo de su `>`. En `logs/v01.jsonl` (abrilo en VS Code), 5 renglones con `modelo`, `tokens_entrada`, `tokens_salida` y `latencia_s`.
+
+**Primer control · 10–15 min:** el log tiene modelo, tokens y latencia de tus 5 preguntas.
 
 <details markdown="1"><summary>¿Sale un error?</summary>
 
+- **`IndentationError`:** dentro de `def`, `for`, `try` y `with`, cada renglón lleva 4 espacios más que el de arriba.
+- **`SyntaxError` en `PREGUNTAS`:** falta una comilla, o la coma entre dos preguntas.
 - **«config.toml está mal escrito»:** los textos van entre comillas rectas (`model = "google_genai:gemini-3.5-flash-lite"`) y los decimales con punto (`temperature = 0.5`).
-- **No aparece `logs/v01.jsonl`:** se crea con la primera respuesta. Si no está, el programa se cortó antes: leé el error.
 - **«429: se terminó la cuota del día…»:** reintentar no sirve. Esperá a que se renueve o cambiá de modelo en `config.toml`.
+- **`Error (intento 1 de 2): TypeError`:** ese modelo no devolvió los tokens. Volvé a `google_genai:gemini-3.5-flash-lite`.
 - **Otro mensaje:** copialo tal cual en el foro «Consultas» del aula virtual.
 
 </details>
 
 ## En clase
 
-1. **Tus preguntas:** cambiá las 5 `PREGUNTAS` por preguntas de tu tema.
-
-    ![Las perillas de v01_api.py: SISTEMA (el mensaje del sistema), las 5 PREGUNTAS y REINTENTOS = 2](../assets/perillas-m3.png)
-
-2. **Predecí** y variá **una** cosa: `SISTEMA` corto vs con reglas, o dos modelos (`model` en `config.toml`, por ejemplo `google_genai:gemini-3.1-flash-lite`).
-3. **Borrá** `logs/v01.jsonl` y corré una vez con cada configuración. Quedan 10 respuestas y 2 errores.
-4. **Compará:** guardá este código como `tabla.py` en la carpeta del proyecto y corré `uv run python tabla.py`. Si variaste el `SISTEMA`, cambiá `"modelo"` por `"sistema"`:
+1. **Predecí** y variá **una** cosa: `SISTEMA` corto vs con reglas («si no estás seguro, decí "no sé"»), o dos modelos (`model` en `config.toml`, por ejemplo `google_genai:gemini-3.1-flash-lite`).
+2. **Borrá** `logs/v01.jsonl` y corré una vez con cada configuración. Quedan 10 respuestas.
+3. **Un error a propósito:** en `config.toml` poné un modelo que no existe, `google_genai:gemini-que-no-existe`. **Predecí** qué queda en el log y corré. ¿Sirvió el reintento? Después volvé al modelo de antes.
+4. **Compará:** guardá esto como `tabla.py` y corré `uv run python tabla.py`. Si variaste el `SISTEMA`, cambiá `"modelo"` por `"sistema"`:
 
     ```python
     import pandas as pd
-    log = pd.read_json("logs/v01.jsonl", lines=True)
-    log = log[log["error"].isna()]  # sin los errores a propósito
-    log["entrada"] = log["uso"].str.get("input_tokens")  # para el costo (Para casa)
-    log["salida"] = log["uso"].str.get("output_tokens")
-    print(log.groupby("modelo")[["entrada", "salida", "latencia_s"]].mean().round(1))
-    print(log.groupby("modelo")[["latencia_s"]].median())  # la 1.ª llamada tarda más
+    grupos = pd.read_json("logs/v01.jsonl", lines=True).groupby("modelo")  # los errores no tienen tokens: no cuentan
+    print(grupos.agg({"tokens_entrada": "mean", "tokens_salida": "mean", "latencia_s": "median"}).round(1).to_string())
     ```
 
-    **Qué deberías ver:** promedios por configuración y, abajo, la mediana de latencia (esa va en la tabla).
+    **Qué deberías ver:** una fila por configuración: tokens promedio y latencia mediana (la primera llamada suele tardar más). El modelo que no existe sale con `NaN`: sin respuestas no hay tokens.
 
-5. **Decidí** y dejala puesta.
-6. *Commit* («v0.1: …») y *Push*.
+5. **Decidí** con qué configuración te quedás y dejala puesta.
 
 ## Controles
 
-- `.env` **no** aparece en los cambios.
-- El log tiene las 10 preguntas y los errores.
-- Las dos configuraciones, con las mismas 5 preguntas.
+- Las dos configuraciones, con las mismas 5 preguntas: cambia una sola cosa.
+- El log tiene las 10 preguntas y los errores del experimento.
+- `.env` **no** aparece en los cambios de GitHub Desktop (`logs/` tampoco: no se sube).
+- ¿Una gana por poco en latencia? Corré de nuevo: la primera llamada suele tardar más.
 
 ## Resultado probado
 
@@ -81,7 +117,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): tabla, configuración y porqué, qué error se reintenta y el costo del «Para casa».
+En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): la tabla, qué configuración elegiste y por qué, qué quedó en el log con el modelo que no existe (¿sirvió el reintento?) y el costo del «Para casa». Subí `v01_api.py` y `tabla.py`: *commit* («v0.1: …») y *push*.
 
 ## Para casa
 
@@ -95,5 +131,5 @@ En Python: `1_000_000`, y `print(f"{costo:.7f}")` para ver los decimales.
 
 ## Microdefensa
 
-- ¿Qué error vale reintentar y cuál no?
+- ¿Qué error vale reintentar y cuál no? ¿Cómo los separarías en el `except`?
 - Confianza del 1 al 4.
