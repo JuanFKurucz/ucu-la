@@ -87,7 +87,7 @@ Tu test de hilos (la demo con tus preguntas y el paso 5). Sin gastar: `uv run py
 
 ## Evidencia
 
-En `evidencia/v0.3.md`, check-in 3 (hasta el mar 17/11, 23:59): tabla, test de hilos, diferencias y una **nota de decisión** de 3 líneas.
+En `evidencia/v0.3.md`, entrega de avance 3 (hasta el mar 17/11, 23:59): tabla, test de hilos, diferencias y una **nota de decisión** de 3 líneas.
 
 ## Para casa
 

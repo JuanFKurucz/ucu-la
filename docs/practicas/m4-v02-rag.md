@@ -90,7 +90,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.2.md`, check-in 2 (hasta el mar 10/11, 23:59): tabla, **un fallo clasificado** y tu tamaño de fragmento **justificado**.
+En `evidencia/v0.2.md`, entrega de avance 2 (hasta el mar 10/11, 23:59): tabla, **un fallo clasificado** y tu tamaño de fragmento **justificado**.
 
 ## Para casa
 

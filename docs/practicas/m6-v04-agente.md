@@ -79,7 +79,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.4.md`, check-in 3 (hasta el mar 17/11, 23:59): tabla, **matriz**, tu cambio y la web caída. Declará la web grabada.
+En `evidencia/v0.4.md`, entrega de avance 3 (hasta el mar 17/11, 23:59): tabla, **matriz**, tu cambio y la web caída. Declará la web grabada.
 
 ## Para casa
 

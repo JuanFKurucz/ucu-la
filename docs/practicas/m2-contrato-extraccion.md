@@ -73,7 +73,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.1.md`, check-in 1 (hasta el mar 3/11, 23:59): tabla, cambio, texto 7, **decisión** y **límite**. El docente comenta en un *issue* «Check-in 1» el fin de semana.
+En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): tabla, cambio, texto 7, **decisión** y **límite**. El docente comenta en un *issue* «Entrega de avance 1» el fin de semana.
 
 ## Para casa
 
