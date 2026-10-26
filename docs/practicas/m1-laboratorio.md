@@ -1,6 +1,6 @@
 # M1 · Laboratorio de comportamiento
 
-| Unidad | Clase | En clase | IA permitida |
+| Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
 | M1 | 1 | 15 min | A1 |
 
@@ -19,7 +19,7 @@
 - **Lab:** `labs/m1_comportamiento.py`, en **marimo** (un cuaderno que se actualiza solo).
 - **Temperatura:** solo cambia algo con `google_genai:gemini-3.1-flash-lite` (o `ollama:qwen3.5:2b`, si lo tenés). Gemini 3.5 Flash-Lite (el de `config.toml`) la ignora: por eso el experimento 1 cambia el modelo.
 - **Decidís:** experimento y predicción, antes de correr.
-- **¿Sin el entorno instalado?** Lo mismo en Colab, sin archivos: `cuadernos/m1_laboratorio.ipynb`.
+- **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque
 
@@ -71,7 +71,7 @@ Una fila: **predicción · resultado · explicación**. Ej.: «Predije 5 iguales
 
 ## Evidencia
 
-En `evidencia/m1.md` (sin nota; [plantilla](../plantillas/evidencia-version.md)):
+En `evidencia/m1.md` (sin nota; plantilla):
 
 - La fila del experimento y una frase «Esto **no** demuestra que…».
 - Tu **diagnóstico** del cuaderno: la última celda lo arma sola con lo que te salió.

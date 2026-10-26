@@ -1,6 +1,6 @@
 # M6 · v0.4 Agente con herramientas
 
-| Unidad | Clase | En clase | IA permitida |
+| Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
 | M6 | 5 | 105 min | A2 |
 
@@ -21,7 +21,7 @@
 - **En `herramientas.py`:** tus `CHUNK`, `OVERLAP` y `K` de M4 (de fábrica, acá `K` viene en 3 y en `v02_rag.py`, en 4); el agente ve los primeros 600 caracteres de cada fragmento.
 - **Datos:** `datos/m6_seleccion.jsonl`, 12 preguntas con su herramienta esperada.
 - **¿Algo nuevo?** Guía de la clase 5 (en el aula virtual), secciones 3 a 5.
-- **¿Sin el entorno instalado?** Lo mismo en Colab, sin archivos: `cuadernos/m6_v04_agente.ipynb`.
+- **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque
 
@@ -79,7 +79,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.4.md` ([plantilla](../plantillas/evidencia-version.md)), check-in 3 (hasta el mar 17/11, 23:59): tabla, **matriz**, tu cambio y la web caída. Declará la web grabada.
+En `evidencia/v0.4.md`, check-in 3 (hasta el mar 17/11, 23:59): tabla, **matriz**, tu cambio y la web caída. Declará la web grabada.
 
 ## Para casa
 

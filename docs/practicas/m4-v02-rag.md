@@ -1,6 +1,6 @@
 # M4 · v0.2 ¿Tus documentos mejoran la respuesta?
 
-| Unidad | Clase | En clase | IA permitida |
+| Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
 | M4 | 3 | 95 min | A2 |
 
@@ -19,7 +19,7 @@
 - **Archivos:** `rag.py` (busca), `v02_rag.py` (sin y con documentos), `suite.py` (mide).
 - **Perillas:** `CHUNK`, `OVERLAP`, `K`, `SISTEMA`.
 - **¿Algo nuevo?** Guía de la clase 3 (en el aula virtual), secciones 1 a 4.
-- **¿Sin el entorno instalado?** Lo mismo en Colab, sin archivos: `cuadernos/m4_v02_rag.ipynb`.
+- **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque
 
@@ -90,7 +90,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.2.md` ([plantilla](../plantillas/evidencia-version.md)), check-in 2 (hasta el mar 10/11, 23:59): tabla, **un fallo clasificado** y tu tamaño de fragmento **justificado**.
+En `evidencia/v0.2.md`, check-in 2 (hasta el mar 10/11, 23:59): tabla, **un fallo clasificado** y tu tamaño de fragmento **justificado**.
 
 ## Para casa
 

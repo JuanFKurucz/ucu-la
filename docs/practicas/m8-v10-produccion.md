@@ -1,6 +1,6 @@
 # M8 · v1.0 ¿Lo liberarías?
 
-| Unidad | Clase | En clase | IA permitida |
+| Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
 | M8 | 7 | 25 min | A3 |
 
@@ -20,7 +20,7 @@
 - **Tests sin gastar:** `tests/test_produccion.py` y `tests/test_pii.py`.
 - **Decidís:** tu peor fallo y su test, tu práctica, `PRECIO_ENTRADA`, `PRECIO_SALIDA`, `PRECIO_FECHA` y `CONSULTAS_POR_DIA`.
 - **¿Algo nuevo?** Guía de la clase 7 (en el aula virtual), secciones 3 a 7.
-- **¿Sin el entorno instalado?** Lo mismo en Colab, sin archivos: `cuadernos/m8_v10_produccion.ipynb`.
+- **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque
 
@@ -68,12 +68,12 @@
 
 ## Evidencia
 
-En `evidencia/v1.0.md` ([plantilla](../plantillas/evidencia-version.md)), después al [registro de evaluación](../plantillas/registro-evaluacion.md): traza, costo con fecha, test y decisión.
+En `evidencia/v1.0.md`, después al registro de evaluación: traza, costo con fecha, test y decisión.
 
 ## Para casa
 
 - La **lista de entrega** de la guía de la clase 8 (en el aula virtual).
-- Los 4 entregables hasta el **domingo 22/11, 23:59** (propuesta).
+- Los 4 entregables hasta el **domingo 22/11, 23:59**.
 
 ## Microdefensa
 

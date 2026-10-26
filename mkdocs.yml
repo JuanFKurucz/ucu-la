@@ -23,9 +23,6 @@ nav:
     - "M6 · Agentes y Herramientas": practicas/m6-v04-agente.md
     - "M7 · Sistemas Multiagente": practicas/m7-v05-multiagente.md
     - "M8 · Producción y Buenas Prácticas": practicas/m8-v10-produccion.md
-  - Plantillas:
-    - "Evidencia de cada versión": plantillas/evidencia-version.md
-    - "Registro de evaluación": plantillas/registro-evaluacion.md
 markdown_extensions:
   - admonition
   - attr_list

@@ -1,6 +1,6 @@
 # M7 · v0.5 Equipo de agentes con aprobación humana
 
-| Unidad | Clase | En clase | IA permitida |
+| Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
 | M7 | 6 | 110 min | A2 |
 
@@ -19,7 +19,7 @@
 - **Archivo:** `v05_equipo.py` (usa tus herramientas de M6).
 - **Decidís:** `MAX_PASOS`, `INVESTIGADOR`, `ANALISTA` y `SUPERVISOR`.
 - **¿Algo nuevo?** Guía de la clase 6 (en el aula virtual) y guía de la clase 7 (en el aula virtual).
-- **¿Sin el entorno instalado?** Lo mismo en Colab, sin archivos: `cuadernos/m7_v05_equipo.ipynb`.
+- **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque
 
@@ -73,7 +73,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.5.md` ([plantilla](../plantillas/evidencia-version.md)), después al [registro de evaluación](../plantillas/registro-evaluacion.md): diagrama, aprobar y rechazar, tabla y **tu decisión** (si gana el agente solo, también vale).
+En `evidencia/v0.5.md`, después al registro de evaluación: diagrama, aprobar y rechazar, tabla y **tu decisión** (si gana el agente solo, también vale).
 
 ## Para casa
 

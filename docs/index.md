@@ -1,10 +1,10 @@
 # LLMs en Acción · Actividades
 
-Maestría en Ciencia de Datos, Universidad Católica del Uruguay. Una práctica por unidad: cada una dice qué hacer paso a paso y qué entregar. Si no tenés el entorno instalado, el botón **Open in Colab** abre la misma actividad en un cuaderno (la clave va en los *Secretos* de Colab, nunca en el cuaderno).
+Maestría en Ciencia de Datos, Universidad Católica del Uruguay. Una práctica por módulo: cada una dice qué hacer paso a paso y qué entregar. Si no tenés el entorno instalado, el botón **Open in Colab** abre la misma actividad en un cuaderno (la clave va en los *Secretos* de Colab, nunca en el cuaderno).
 
 Antes de la clase 1: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_python_de_cero.ipynb) Python desde cero (cuaderno de la clase 1)
 
-| Unidad | Práctica | Cuaderno |
+| Módulo | Práctica | Cuaderno |
 |---|---|---|
 | M1 · Fundamentos de LLMs | [Laboratorio de comportamiento](practicas/m1-laboratorio.md) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_laboratorio.ipynb) |
 | M2 · Prompt Engineering | [Contrato de extracción](practicas/m2-contrato-extraccion.md) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m2_extraccion.ipynb) |
@@ -15,4 +15,4 @@ Antes de la clase 1: [![Open In Colab](https://colab.research.google.com/assets/
 | M7 · Sistemas Multiagente | [v0.5 Equipo de agentes con aprobación humana](practicas/m7-v05-multiagente.md) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m7_v05_equipo.ipynb) |
 | M8 · Producción y Buenas Prácticas | [v1.0 ¿Lo liberarías?](practicas/m8-v10-produccion.md) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m8_v10_produccion.ipynb) |
 
-Para entregar: [evidencia de cada versión](plantillas/evidencia-version.md) y [registro de evaluación](plantillas/registro-evaluacion.md). Las guías, las slides y la evaluación están en el aula virtual.
+Las guías y la evaluación están en el aula virtual.

@@ -1,6 +1,6 @@
 # M2 · Contrato de extracción
 
-| Unidad | Clase | En clase | IA permitida |
+| Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
 | M2 | 2 | 30 min | A2 |
 
@@ -19,7 +19,7 @@
 - **Archivo:** `m2_extraccion.py`. **Datos:** `datos/m2_textos.jsonl` (10 textos; el 7 tiene una trampa).
 - **Molde** `Hallazgo`: `entidad`, `cifra`, `fuente_textual`.
 - **Métricas:** **válidos** (entra en el molde) · **correctos** (entidad y cifra) · **literal** (la frase está en el texto).
-- **¿Sin el entorno instalado?** Lo mismo en Colab, sin archivos: `cuadernos/m2_extraccion.ipynb`.
+- **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque
 
@@ -73,7 +73,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.1.md` ([plantilla](../plantillas/evidencia-version.md)), check-in 1 (hasta el mar 3/11, 23:59): tabla, cambio, texto 7, **decisión** y **límite**. El docente comenta en un *issue* «Check-in 1» el fin de semana.
+En `evidencia/v0.1.md`, check-in 1 (hasta el mar 3/11, 23:59): tabla, cambio, texto 7, **decisión** y **límite**. El docente comenta en un *issue* «Check-in 1» el fin de semana.
 
 ## Para casa
 

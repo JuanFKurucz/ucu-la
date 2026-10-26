@@ -1,6 +1,6 @@
 # M3 · v0.1 Tu primer programa con un LLM
 
-| Unidad | Clase | En clase | IA permitida |
+| Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
 | M3 | 2 | 25 min | A2 |
 
@@ -18,7 +18,7 @@
 
 - **Archivo:** `v01_api.py`. **Perillas:** `SISTEMA`, `PREGUNTAS`, `REINTENTOS`.
 - **Registro:** `logs/v01.jsonl`, un renglón por pregunta.
-- **¿Sin el entorno instalado?** Lo mismo en Colab, sin archivos: `cuadernos/m3_v01_api.ipynb`.
+- **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque
 
@@ -81,7 +81,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.1.md` ([plantilla](../plantillas/evidencia-version.md)), check-in 1 (hasta el mar 3/11, 23:59): tabla, configuración y porqué, qué error se reintenta y el costo del «Para casa». El docente comenta en un *issue* «Check-in 1» el fin de semana.
+En `evidencia/v0.1.md`, check-in 1 (hasta el mar 3/11, 23:59): tabla, configuración y porqué, qué error se reintenta y el costo del «Para casa». El docente comenta en un *issue* «Check-in 1» el fin de semana.
 
 ## Para casa
 

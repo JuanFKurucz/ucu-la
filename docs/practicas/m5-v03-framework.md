@@ -1,6 +1,6 @@
 # M5 · v0.3 Framework y memoria
 
-| Unidad | Clase | En clase | IA permitida |
+| Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
 | M5 | 4 | 100 min | A2 |
 
@@ -18,7 +18,7 @@
 
 - **Archivos:** `v03_memoria.py` (mismo RAG, en LangChain, con memoria) y `v02_rag.py`. Mismas perillas.
 - **¿Algo nuevo?** Guía de la clase 4 (en el aula virtual), secciones 2 a 5.
-- **¿Sin el entorno instalado?** Lo mismo en Colab, sin archivos: `cuadernos/m5_v03_memoria.ipynb`.
+- **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque
 
@@ -87,7 +87,7 @@ Tu test de hilos (la demo con tus preguntas y el paso 5). Sin gastar: `uv run py
 
 ## Evidencia
 
-En `evidencia/v0.3.md` ([plantilla](../plantillas/evidencia-version.md)), check-in 3 (hasta el mar 17/11, 23:59): tabla, test de hilos, diferencias y una **nota de decisión** de 3 líneas.
+En `evidencia/v0.3.md`, check-in 3 (hasta el mar 17/11, 23:59): tabla, test de hilos, diferencias y una **nota de decisión** de 3 líneas.
 
 ## Para casa
 
