@@ -18,7 +18,6 @@
 
 - **Archivos:** `rag.py` (busca), `v02_rag.py` (sin y con documentos), `suite.py` (mide).
 - **Perillas:** `CHUNK`, `OVERLAP`, `K`, `SISTEMA`.
-- **¿Algo nuevo?** Guía de la clase 3 (en el aula virtual), secciones 1 a 4.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque

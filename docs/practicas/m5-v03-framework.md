@@ -17,7 +17,6 @@
 ## Punto de partida
 
 - **Archivos:** `v03_memoria.py` (mismo RAG, en LangChain, con memoria) y `v02_rag.py`. Mismas perillas.
-- **¿Algo nuevo?** Guía de la clase 4 (en el aula virtual), secciones 2 a 5.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque

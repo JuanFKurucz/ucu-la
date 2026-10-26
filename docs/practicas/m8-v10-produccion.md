@@ -19,7 +19,6 @@
 - **Archivo:** `v10_produccion.py`: v0.4 + traza, costo, tapado de emails y fallo seguro.
 - **Tests sin gastar:** `tests/test_produccion.py` y `tests/test_pii.py`.
 - **Decidís:** tu peor fallo y su test, tu práctica, `PRECIO_ENTRADA`, `PRECIO_SALIDA`, `PRECIO_FECHA` y `CONSULTAS_POR_DIA`.
-- **¿Algo nuevo?** Guía de la clase 7 (en el aula virtual), secciones 3 a 7.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque
@@ -72,7 +71,7 @@ En `evidencia/v1.0.md`, después al registro de evaluación: traza, costo con fe
 
 ## Para casa
 
-- La **lista de entrega** de la guía de la clase 8 (en el aula virtual).
+- La **lista de entrega** de la tarea «Entrega final» del aula virtual.
 - Los 4 entregables hasta el **domingo 22/11, 23:59**.
 
 ## Microdefensa

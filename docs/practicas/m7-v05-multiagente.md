@@ -18,7 +18,6 @@
 
 - **Archivo:** `v05_equipo.py` (usa tus herramientas de M6).
 - **Decidís:** `MAX_PASOS`, `INVESTIGADOR`, `ANALISTA` y `SUPERVISOR`.
-- **¿Algo nuevo?** Guía de la clase 6 (en el aula virtual) y guía de la clase 7 (en el aula virtual).
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque

@@ -6,6 +6,8 @@
 
 **Entregás:** diagnóstico del cuaderno, fila de 1 experimento.
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_python_de_cero.ipynb) Cuaderno de la clase 1: Python desde cero.
+
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_laboratorio.ipynb) Abrir el cuaderno en Colab (para quien no tiene el entorno instalado).
 
 
@@ -41,7 +43,7 @@
 
 - **No abre el lab:** pegá en el navegador la dirección `http://localhost:…` que muestra la terminal.
 - **«503»:** Gemini está saturado, no es tu código. Esperá un minuto o hacé el experimento 2.
-- **Otro mensaje:** buscalo, tal como sale, en guía 1, «Si te trabás» (en el aula virtual): cada fila empieza con el texto que ves.
+- **Otro mensaje:** copialo tal cual en el foro «Consultas» del aula virtual.
 
 </details>
 
@@ -84,4 +86,4 @@ En `evidencia/m1.md` (sin nota; plantilla):
 ## Microdefensa
 
 - ¿Qué contradijo tu predicción? ¿Qué lo explicaría?
-- Confianza del 1 al 4 (glosario).
+- Confianza del 1 al 4.

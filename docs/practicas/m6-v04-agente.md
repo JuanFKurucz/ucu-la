@@ -20,7 +20,6 @@
 - **Decidís:** descripciones, `SISTEMA`, límites y `web` en `config.toml`.
 - **En `herramientas.py`:** tus `CHUNK`, `OVERLAP` y `K` de M4 (de fábrica, acá `K` viene en 3 y en `v02_rag.py`, en 4); el agente ve los primeros 600 caracteres de cada fragmento.
 - **Datos:** `datos/m6_seleccion.jsonl`, 12 preguntas con su herramienta esperada.
-- **¿Algo nuevo?** Guía de la clase 5 (en el aula virtual), secciones 3 a 5.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 
 ## Arranque

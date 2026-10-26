@@ -37,7 +37,7 @@
 - **«config.toml está mal escrito»:** los textos van entre comillas rectas (`model = "google_genai:gemini-3.5-flash-lite"`) y los decimales con punto (`temperature = 0.5`).
 - **No aparece `logs/v01.jsonl`:** se crea con la primera respuesta. Si no está, el programa se cortó antes: leé el error.
 - **«429: se terminó la cuota del día…»:** reintentar no sirve. Esperá a que se renueve o cambiá de modelo en `config.toml`.
-- **Otro mensaje:** buscalo, tal como sale, en guía 2, «Si te trabás» (en el aula virtual): cada fila empieza con el texto que ves.
+- **Otro mensaje:** copialo tal cual en el foro «Consultas» del aula virtual.
 
 </details>
 
@@ -81,7 +81,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): tabla, configuración y porqué, qué error se reintenta y el costo del «Para casa». El docente comenta en un *issue* «Entrega de avance 1» el fin de semana.
+En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): tabla, configuración y porqué, qué error se reintenta y el costo del «Para casa».
 
 ## Para casa
 

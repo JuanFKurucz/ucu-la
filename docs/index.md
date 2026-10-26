@@ -2,7 +2,7 @@
 
 Maestría en Ciencia de Datos, Universidad Católica del Uruguay. Una práctica por módulo: cada una dice qué hacer paso a paso y qué entregar. Si no tenés el entorno instalado, el botón **Open in Colab** abre la misma actividad en un cuaderno (la clave va en los *Secretos* de Colab, nunca en el cuaderno).
 
-Antes de la clase 1: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_python_de_cero.ipynb) Python desde cero (cuaderno de la clase 1)
+Clase 1: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_python_de_cero.ipynb) Python desde cero (cuaderno de la clase 1)
 
 | Módulo | Práctica | Cuaderno |
 |---|---|---|
