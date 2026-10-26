@@ -1,0 +1,269 @@
+<h1>Clase 8 · Defensa individual</h1>
+<p>Lunes 23/11 · presencial · última clase · 18:15–19:35 y 19:45–21:05. Tema: Proyecto
+Integrador (M9).</p>
+<ul>
+<li>Slides de hoy (PDF en el aula virtual): M9 entera.</li>
+</ul>
+<p><strong>En resumen.</strong> Cada uno tiene una <strong>defensa individual de 35 minutos</strong>, a
+solas con el docente: presentás tu sistema (20), respondés preguntas sobre
+<strong>todo</strong> lo que hiciste (8) y revisamos tu código juntos (7).</p>
+<h2>Dónde estamos</h2>
+<ul>
+<li>Pasaste de no saber qué hace un LLM a un asistente que busca en tus documentos y en internet, calcula, reparte el trabajo, pide aprobación y deja trazas y costos.</li>
+<li>Cada paso lo decidiste y lo mediste.</li>
+<li>Hoy lo contás.</li>
+</ul>
+<h2>Qué vas a poder hacer al final</h2>
+<ul>
+<li>Mostrar tu sistema andando, con sus límites.</li>
+<li>Defender cada decisión con un número de tu suite, tu traza o tus check-ins.</li>
+<li>Explicar cualquier parte de tu código, de <code>v0.1</code> a <code>v1.0</code>.</li>
+</ul>
+<h2>Antes de la clase: lista de entrega</h2>
+<ul>
+<li>Hasta el <strong>domingo 22/11 a las 23:59</strong> (propuesta).</li>
+<li>Al aula virtual subís el enlace del repo y el PDF de las slides; el documento de arquitectura y el registro van en el repo, en Markdown, para que el docente los lea junto al código y su historial:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">#</th>
+<th>Entregable</th>
+<th>Qué tiene que tener</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td><strong>Repositorio</strong> (el enlace de GitHub)</td>
+<td>Es privado: el docente tiene que estar invitado como colaborador (<em>Settings → Collaborators</em>, clase 1), o no lo puede abrir. Las versiones <code>v0.1</code> a <code>v1.0</code>, cada una con su página <code>evidencia/vX.Y.md</code> (tags opcionales). Un <code>README.md</code> para alguien que nunca lo vio: reescribí el de la plantilla, que habla del curso (qué poner y cómo probarlo). Sin <code>.env</code> ni claves: en github.com, la lista de archivos no muestra <code>.env</code> (sí <code>.env.example</code>).</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td><strong>Documento de arquitectura</strong> (1–2 páginas)</td>
+<td>En tu repo, <code>docs/arquitectura.md</code>: diagrama del grafo, decisiones (fragmento, <em>k</em>, descripciones, modelo) y por qué. Ojo: el <em>k</em> de <code>v02_rag.py</code> y el del agente (<code>herramientas.py</code>, que además recorta a 600 caracteres) pueden ser distintos: declará los dos. Plantilla.</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td><strong>Registro de evaluación</strong></td>
+<td>En tu repo, <code>docs/registro-evaluacion.md</code>: tus suites (la de desarrollo, 20 consultas con 2 adversariales; la corrida final, 3 veces: <code>pass^3</code>), ejemplos y el análisis: qué funciona y qué no. Los CSV de <code>logs/</code> no se suben (git los ignora): copiá al registro las tablas y los ejemplos. Plantilla.</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td><strong>Slides</strong> (PDF)</td>
+<td>Para la presentación de 20 minutos. Plantilla.</td>
+</tr>
+</tbody>
+</table>
+<p>Los <strong>4 requisitos</strong>, cada uno con evidencia:</p>
+<ul>
+<li>[ ] RAG sobre tus documentos (≥ 5), tamaño de fragmento justificado, mejora frente a sin RAG y recuperación evaluada.</li>
+<li>[ ] Agente que elige entre documentos y web (cálculo: recomendado), demostrado.</li>
+<li>[ ] Equipo en LangGraph: supervisor, investigador, analista y redactor, con aprobación humana antes de responder.</li>
+<li>[ ] Una práctica de producción (trazas, costos, guardrail, caché o evaluación continua) con evidencia de que aporta.</li>
+</ul>
+<h2>Cómo se corrige el proyecto (60 de la nota, propuesta)</h2>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th style="text-align: right;">Peso</th>
+<th>Qué mirar en tu proyecto antes de entregar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Funcionalidad</td>
+<td style="text-align: right;">30</td>
+<td>Los 4 requisitos andan y la demo corre sin errores graves.</td>
+</tr>
+<tr>
+<td>Decisiones de diseño</td>
+<td style="text-align: right;">25</td>
+<td>Cada decisión (fragmento, <em>k</em>, modelo, herramientas) tiene su porqué y su número.</td>
+</tr>
+<tr>
+<td>Calidad del RAG</td>
+<td style="text-align: right;">20</td>
+<td>Trae los fragmentos correctos y lo mostrás con la suite: hit (cuenta documentos), qué fragmentos llegaron y fallos clasificados.</td>
+</tr>
+<tr>
+<td>Comportamiento del agente</td>
+<td style="text-align: right;">15</td>
+<td>Elige bien la herramienta, medido con tu suite de selección.</td>
+</tr>
+<tr>
+<td>Práctica de producción</td>
+<td style="text-align: right;">10</td>
+<td>Está hecha y tenés evidencia de que aporta (traza, costo, test).</td>
+</tr>
+</tbody>
+</table>
+<p>Más complejidad no suma sola: un equipo de agentes sin evidencia de mejora vale
+menos que una comparación honesta.</p>
+<h2>Paso a paso de la clase</h2>
+<ul>
+<li>Turnos de 35 minutos, con 5 de cambio entre uno y otro: <strong>18:15, 18:55, 19:45 y 20:25</strong> (recreo 19:35–19:45).</li>
+<li>El docente te avisa el tuyo antes.</li>
+<li>
+<p>Como es a solas, venís para tu turno, unos minutos antes, con la computadora lista y el sistema corriendo.</p>
+</li>
+<li>
+<p>Podés tener abiertos tu repositorio, tus notebooks y tus notas; no un asistente de IA.</p>
+</li>
+<li>¿Deja de andar algo (la clave, internet)? Mostrá la traza y los CSV guardados: también es evidencia.</li>
+<li>¿Solo la web? <code>web = "grabada"</code> en <code>config.toml</code> y seguí; avisá que responde con datos guardados (mostrar ese límite cuenta).</li>
+</ul>
+<ol>
+<li><strong>Presentación (20 min).</strong></li>
+<li><strong>Preguntas (8 min).</strong></li>
+<li><strong>Revisión de código (7 min).</strong></li>
+</ol>
+<h2>La presentación (20 minutos)</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Min</th>
+<th>Sección</th>
+<th>Qué mostrar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Contexto</td>
+<td>Qué problema resuelve y qué documentos usaste.</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>Demo en vivo</td>
+<td>3 consultas que muestren los 4 requisitos (el equipo con aprobación, con <code>uv run python v05_equipo.py "tu pregunta"</code>, que primero imprime el dibujo del grafo y después corre el equipo dos veces, aprobando y rechazando: ensayalo con reloj; el resto, con <code>v10_produccion.py</code>); mejor si una es un caso límite (sin respuesta en tus documentos, o con la web caída).</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>Arquitectura</td>
+<td>El diagrama, las decisiones y <strong>por qué</strong>.</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>Evaluación y límites</td>
+<td>Cómo mediste, qué no funciona, qué mejorarías.</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>Práctica de producción</td>
+<td>Qué elegiste, la evidencia y tu go / no-go.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Mostrá los <strong>límites</strong>, no solo los casos felices.</li>
+<li>Si algo falla en vivo, explicá qué pasa: también cuenta.</li>
+<li>No leas las slides: mostrá el sistema.</li>
+</ul>
+<h2>Las preguntas (8 minutos)</h2>
+<ul>
+<li><strong>Sin asistentes de IA.</strong> 3 preguntas sobre cualquier parte, de <code>v0.1</code> a <code>v1.0</code>, salidas de <strong>tus</strong> decisiones: check-ins, suite, traza, repositorio.</li>
+<li>Te pueden pedir que muestres o cambies algo en vivo.</li>
+<li>
+<p>Por ejemplo:</p>
+</li>
+<li>
+<p>¿Por qué ese tamaño de fragmento? ¿Qué pregunta empeoraría con el doble?</p>
+</li>
+<li>Mostrá un fallo: ¿recuperación o generación? ¿Cómo lo supiste?</li>
+<li>Si la web se cae, ¿qué ve el usuario? ¿Ese control está en el prompt o en el código?</li>
+<li>¿Cuánto cuesta una consulta? ¿De dónde sale el número?</li>
+</ul>
+<p>Cada respuesta vale de 0 a 4; el 3 pide tu evidencia (suite, traza, check-ins):</p>
+<p><img src="https://juanfkurucz.com/ucu-la/assets/guias/niveles-respuesta.svg" alt="Cada respuesta de la defensa vale de 0 a 4: 0, no puede explicarlo; 1, qué hace, sin el por qué; 2, por qué, en general; 3, por qué, con tu evidencia; 4, además, un límite y la próxima prueba"></p>
+<p>La defensa se puntúa sobre 30 (propuesta): presentación 10, las 3 preguntas 12 (la suma de sus 0 a 4) y la revisión de
+código 8 (dos respuestas más con la misma escala). No suma: da el factor que multiplica tu proyecto y tus check-ins,
+1 (24 a 30 de 30), 0,8 (15 a 23), 0,5 (0 a 14) o 0 si el proyecto no es suyo.</p>
+<h2>La revisión de código (7 minutos)</h2>
+<ul>
+<li>En tu repositorio, el docente elige una versión y vos explicás qué hace cada parte.</li>
+<li>Repasamos los comentarios de tus check-ins: qué corregiste y qué no.</li>
+<li>
+<p>Te puede pedir un cambio chico y que corras la suite o el test.</p>
+</li>
+<li>
+<p><strong>Cómo prepararte:</strong> releé tus tres check-ins y los comentarios del docente (los <em>issues</em> «Check-in 1» a «Check-in 3» de tu repositorio).</p>
+</li>
+<li>Para cada versión: ¿qué decidí, con qué número, y qué sigue sin resolver?</li>
+<li>Qué archivo es cada versión: tabla «Qué hay y cuándo se usa» del README de tu proyecto.</li>
+<li>Practicá abrir una versión vieja: github.com → tu repo → <em>Commits</em> → el último de esa versión («v0.x:» o «v1.0:») → botón <code>&lt;&gt;</code> («Browse repository at this point»). Ves ese código sin tocar tu carpeta.</li>
+<li>Antes de tu turno, el docente corre sobre tu repo entregado unas preguntas nuevas de tu tema (formativo, sin nota; puede preguntarte por una): tu repo tiene que andar recién clonado (cómo probarlo).</li>
+<li>Antes de venir, corré <code>uv run pytest</code>: no gasta cuota y te muestra que tus tests siguen pasando (si te piden correr uno, ya sabés qué esperar).</li>
+<li><strong>Qué deberías ver:</strong> <code>… passed</code> y ningún <code>failed</code>; algunos <code>skipped</code> están bien (por qué).</li>
+</ul>
+<p><strong>Ejemplo: la misma decisión en nivel 2 y en nivel 4</strong> (medido en el corpus de ejemplo, 17/10; se repite sin gastar con <code>uv run python -m ejemplos.clase4 perilla</code>):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Nivel</th>
+<th>Respuesta a «¿por qué ese K?»</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2</td>
+<td>«Puse K = 8 porque trae más contexto.»</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>«Con K = 4 no llegaba el fragmento de <code>RemoveMessage</code>; con 8 llegó en el puesto 5. Cuesta más tokens. Límite: en castellano llega tarde; la misma pregunta en inglés lo trae primero con K = 4, porque los embeddings son en inglés. La próxima prueba: embeddings multilingües.»</td>
+</tr>
+</tbody>
+</table>
+<p>La diferencia no es saber más: es mostrar tu evidencia y decir qué todavía no sabés.</p>
+<h2>Si te trabás</h2>
+<table>
+<thead>
+<tr>
+<th>Problema</th>
+<th>Qué hacer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>La clave o internet fallan en la demo</td>
+<td>Mostrá la traza y los CSV que ya guardaste: también es evidencia.</td>
+</tr>
+<tr>
+<td>«429 … cuota del día» en la demo</td>
+<td>Igual que arriba: traza, CSV y capturas. Para no llegar así, el día de la defensa no corras suites por tu cuenta (una con v0.5 gasta unos 83 de los 500 pedidos diarios): guardá la cuota para la demo y para lo que te pida el docente en la revisión.</td>
+</tr>
+<tr>
+<td>«503: el proveedor está saturado…» en la demo</td>
+<td>No es tu sistema: reintentá una vez después de un minuto. Si sigue (el 19/10, Gemini 3.1 Flash-Lite estuvo así toda una tarde), cambiá de modelo en <code>config.toml</code> o mostrá la traza y los CSV, como arriba.</td>
+</tr>
+<tr>
+<td>Solo falla la búsqueda web</td>
+<td><code>web = "grabada"</code> en <code>config.toml</code> y seguí, diciendo que esa web es guardada. Trae datos de LangGraph, no de tu tema: para esa respuesta, mostrá la captura que guardaste (plantilla).</td>
+</tr>
+<tr>
+<td>Alguna vez subiste <code>.env</code> (en GitHub Desktop, <em>History</em>: un commit lo muestra entre los archivos cambiados)</td>
+<td>Borrarlo ahora no alcanza: sigue en el historial y quien abra ese commit ve la clave. Borrá esa clave en la página donde la sacaste (paso 4 de la hoja del entorno guiado), creá otra y pegala solo en tu <code>.env</code>. Avisá al docente.</td>
+</tr>
+<tr>
+<td>No encontrás una versión vieja</td>
+<td>En github.com: <em>Commits</em> → el último que empieza con «v0.x:» o «v1.0:» → botón <code>&lt;&gt;</code>.</td>
+</tr>
+<tr>
+<td>Te quedás en blanco en una pregunta</td>
+<td>Decí qué medirías para responderla: el nivel 4 incluye la próxima prueba.</td>
+</tr>
+<tr>
+<td>Un error del proveedor: «429…», «503…», «500 o 504», «Sin conexión…», «404…» o «sin saldo»</td>
+<td>Son los mismos de la clase 2 y se arreglan igual: «Si te trabás» de la guía 2, una fila por error.</td>
+</tr>
+</tbody>
+</table>
+<h2>Sin mirar (2 min, al terminar)</h2>
+<ol>
+<li>¿Qué decisión de tu sistema podés defender con tu evidencia?</li>
+<li>¿Qué medirías antes de confiar en un sistema con LLMs que te ofrezcan?</li>
+</ol>
+<h2>Palabras nuevas</h2>
+<p>caso límite · <code>pass^3</code> (consistencia). Repasá el glosario antes de las preguntas.</p>

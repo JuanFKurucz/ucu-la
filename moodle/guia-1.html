@@ -1,0 +1,371 @@
+<h1>Clase 1 · Qué es un LLM</h1>
+<p>Lunes 26/10 · presencial · 18:15–19:35 y 19:45–21:05. Antes: clase 0.</p>
+<ul>
+<li>
+<p>Slides de hoy (PDF en el aula virtual): Clase 0 entera y M1 entera.</p>
+</li>
+<li>
+<p><strong>En resumen.</strong> Un LLM es un clasificador que predice el próximo pedazo de texto, como los de ML pero con 100 a 260 mil clases.</p>
+</li>
+<li>Por eso escribe bien y también inventa: elige lo probable, no lo verdadero.</li>
+<li>Hoy le preguntás a uno real desde Python y dejás tu computadora lista.</li>
+</ul>
+<h2>Dónde estamos</h2>
+<ul>
+<li>De ML ya sabés que un <strong>clasificador</strong> calcula un puntaje por clase, lo pasa por <strong>softmax</strong> para tener probabilidades y elige.</li>
+<li>Se <strong>entrena</strong> con ejemplos y puede equivocarse con confianza.</li>
+<li>Con eso alcanza para entender un LLM.</li>
+</ul>
+<h2>La historia en un minuto</h2>
+<ul>
+<li><strong>1913 y 1948:</strong> Markov cuenta, en un poema, si a una vocal le sigue otra vocal o una consonante; Shannon arma frases contando palabras
+  (<a href="https://spectrum.ieee.org/andrey-markov-and-claude-shannon-built-the-first-language-generation-models">IEEE Spectrum</a>).
+  Es lo que vas a hacer en el cuaderno, parte 2.</li>
+<li><strong>2013 y 2017:</strong> cada palabra pasa a ser un vector, y el Transformer mira todo el texto a la vez.</li>
+<li><strong>2018 a 2022:</strong> GPT predice texto de internet; más datos y más tamaño llevan a ChatGPT, ajustado para conversar.</li>
+<li><strong>Hoy:</strong> buscan en documentos, usan herramientas y se coordinan: es el camino de este curso.</li>
+</ul>
+<p>La idea nunca cambió: mirar lo anterior y apostar por lo que sigue.</p>
+<h2>Qué vas a poder hacer al final</h2>
+<ul>
+<li>Explicar qué hace un LLM con lo que sabés de ML.</li>
+<li>Explicar qué cambia la <strong>temperatura</strong> y por qué un LLM inventa.</li>
+<li>Preguntarle a un LLM real desde Python y leer cuántos tokens usó.</li>
+<li>Tener tu entorno andando en tu computadora, con la misma clave.</li>
+</ul>
+<h2>Antes de la clase: lecturas (15 min, si podés)</h2>
+<p>Si no llegaste a leer, no pasa nada: todo se ve en clase.</p>
+<p><strong>1. <a href="https://huggingface.co/learn/llm-course/es/chapter1/4">Hugging Face — ¿Cómo funcionan los Transformadores?</a></strong> · 10 min</p>
+<ul>
+<li><strong>Para qué:</strong> de dónde sale lo que «sabe» un LLM.</li>
+<li><strong>Leé:</strong> «Los Transformadores son modelos de lenguaje», «Transferencia de aprendizaje» y «Capas de atención».</li>
+<li><strong>Antes:</strong> si nadie etiqueta los textos, ¿de dónde sale la etiqueta?</li>
+<li><strong>Después, sin mirar:</strong> ¿qué diferencia hay entre preentrenar y ajustar? ¿Qué parte decide qué palabras del contexto importan?</li>
+</ul>
+<p><strong>2. <a href="https://poloclub.github.io/transformer-explainer/">Transformer Explainer (interactivo)</a></strong> · 5 min</p>
+<ul>
+<li><strong>Para qué:</strong> ver las probabilidades del próximo token.</li>
+<li><strong>Hacé:</strong> escribí una frase y mové «Temperature» de 0,2 a 2 (después de 1 salta de a uno: no hay 1,5).</li>
+<li><strong>Después, sin mirar:</strong> ¿qué pasa con las probabilidades al subir la temperatura?</li>
+</ul>
+<p><img src="https://juanfkurucz.com/ucu-la/assets/guias/m1-transformer-explainer.png" alt="Transformer Explainer con GPT-2: la frase «Data visualization empowers users to» pasa por embedding, atención y MLP, y abajo las probabilidades del próximo token (visualize, create, see, make, easily)"></p>
+<h2>La idea central: un LLM es un clasificador del próximo token</h2>
+<p>Le escribís «La capital de Uruguay es». El modelo no busca ni «entiende». Hace esto:</p>
+<ol>
+<li>Parte el texto en <strong>tokens</strong> (más o menos palabras).</li>
+<li>Calcula un <strong>puntaje</strong> para cada token que podría seguir.</li>
+<li><strong>Softmax</strong>: medido con gpt-4.1-nano, «Monte» 0,996; «Mon» 0,002 («Montevideo» llega en dos tokens).</li>
+<li><strong>Elige</strong> uno, a veces al azar según las probabilidades (<strong>muestrear</strong>).</li>
+<li>Lo agrega y <strong>vuelve al paso 1</strong>.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Clasificador de ML</th>
+<th>LLM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entrada</td>
+<td>Las features de un ejemplo</td>
+<td>Todo el texto anterior</td>
+</tr>
+<tr>
+<td>Clases</td>
+<td>Pocas (spam / no spam)</td>
+<td>100 a 260 mil tokens (GPT-4: 100 277; GPT-4o y 4.1: 200 019; Gemini 2.0: unos 262 mil)</td>
+</tr>
+<tr>
+<td>Salida</td>
+<td>Softmax sobre las clases</td>
+<td>Softmax sobre los tokens</td>
+</tr>
+<tr>
+<td>Etiqueta</td>
+<td>La anotó alguien</td>
+<td>La palabra que seguía en el texto</td>
+</tr>
+</tbody>
+</table>
+<p>Generar un párrafo es clasificar, agregar y repetir.</p>
+<p><img src="https://juanfkurucz.com/ucu-la/assets/guias/ciclo-generar.svg" alt="Ciclo de generación en cuatro pasos: leer el texto, calcular qué pedazo sigue, elegir uno y agregarlo"></p>
+<h2>Temperatura: cuánto se arriesga al elegir</h2>
+<p>Los puntajes se dividen por la <strong>temperatura</strong> (T) antes del softmax (lo escribís en el ejercicio 7 del cuaderno):</p>
+<p><code>probabilidad de cada token = exp(puntaje / T) / suma de exp(puntaje / T) de todos los tokens</code></p>
+<p>Con T chica, el puntaje más alto se despega; con T grande, se emparejan.</p>
+<p>Probabilidades reales que dio gpt-4.1-nano para seguir «El fin de semana fuimos a la», recalculadas
+con cada T sobre las 5 primeras (<code>uv run python -m ejemplos.clase1 abierto</code>):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">T</th>
+<th style="text-align: right;">«play» (playa)</th>
+<th style="text-align: right;">«c»</th>
+<th style="text-align: right;">«mont»</th>
+<th>Qué pasa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0,5</td>
+<td style="text-align: right;">0,97</td>
+<td style="text-align: right;">0,02</td>
+<td style="text-align: right;">0,01</td>
+<td>Casi siempre la más probable. Útil para extraer datos.</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0,75</td>
+<td style="text-align: right;">0,10</td>
+<td style="text-align: right;">0,09</td>
+<td>Las probabilidades del modelo.</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0,48</td>
+<td style="text-align: right;">0,18</td>
+<td style="text-align: right;">0,17</td>
+<td>Se emparejan: más variedad y más rarezas.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>¿Por qué «play» da 0,75 acá y 72 % en la slide de las seis vueltas?</li>
+<li>
+<p>Acá se recalcula sobre las 5 primeras, que suman cerca de 0,96 (72 ÷ 0,96 ≈ 75); allá es la probabilidad sin recalcular.</p>
+</li>
+<li>
+<p><strong>T = 0:</strong> elige siempre la más probable (no divide por cero: toma directo la de mayor puntaje).</p>
+</li>
+<li><strong>Medido</strong> (5 pedidos iguales, <code>… clase1 temperatura</code>; el <code>…</code> es <code>uv run python -m ejemplos.</code>):</li>
+<li>Gemini 3.1 Flash-Lite: T = 0, el mismo nombre las 5 veces (tres corridas); T = 1, 2, 4 y 3 distintos.</li>
+<li>Gemini 3.5 Flash-Lite, el del curso, <strong>no usa la temperatura</strong>: con «T = 0» dio 5 distintos.</li>
+<li>Aun con un modelo que la usa, T = 0 no garantiza lo mismo: el servidor agrupa pedidos y redondea distinto (<a href="https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/">He y otros, 2025</a>).</li>
+<li>Cambia la <strong>variedad</strong>, no la <strong>verdad</strong>: a T = 0 puede repetir el mismo error.</li>
+</ul>
+<p><img src="https://juanfkurucz.com/ucu-la/assets/guias/temperatura-pasos.svg" alt="Qué es la temperatura: un número que estira o aplana las probabilidades antes de sortear; con playa al 75 %, sale playa unas 75 de cada 100 veces"></p>
+<h2>Por qué un LLM inventa (alucina)</h2>
+<ol>
+<li><strong>Preentrenamiento</strong>: lee muchísimo texto y aprende a predecir la palabra siguiente.</li>
+<li><strong>Ajuste</strong>: aprende de respuestas escritas por personas y después de cuál de dos prefieren (<a href="https://arxiv.org/abs/2203.02155">Ouyang y otros, 2022</a>).<ul>
+<li>Gana: sigue instrucciones.</li>
+<li>Mañas: se explaya y te da la razón, porque a quienes comparan les gusta que coincida con ellos (<a href="https://arxiv.org/abs/2310.13548">Sharma y otros, 2023</a>).</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>Nunca aprendió a separar <strong>verdadero</strong> de <strong>probable</strong>: ante un dato raro, genera algo que <em>suena</em> bien.</li>
+<li>Inventa sobre todo lo <strong>específico</strong>: nombres, fechas, cifras, citas, links. Es la <strong>alucinación</strong>.</li>
+<li>El entrenamiento lo empuja a arriesgar: en las pruebas, adivinar a veces suma y «no sé» nunca (<a href="https://arxiv.org/abs/2509.04664">Kalai y otros, 2025</a>).</li>
+<li>Por eso en la clase 2 le das <strong>permiso para decir «no sé»</strong>.</li>
+</ul>
+<p><strong>Medido:</strong> «El álgebra de los ríos» de Benedetti no existe; Gemini la resumió con seguridad, como un poemario sobre el tiempo y la memoria (<code>… clase1 inventa</code>).</p>
+<h2>Paso a paso de la clase</h2>
+<ol>
+<li><strong>Clase 0 (25 min) y una predicción (5 min).</strong> ¿El modelo busca, entiende o
+   predice «La capital de Uruguay es…»? Anotá tu apuesta.</li>
+<li><strong>Tu clave de Gemini (5 min).</strong> En <a href="https://aistudio.google.com/apikey">Google AI Studio</a> → <strong>Create API key</strong> → copiala.
+   En Colab, la llave de la izquierda (<strong>Secretos</strong>) → nuevo secreto <code>GOOGLE_API_KEY</code>, con <strong>Acceso del notebook</strong>.
+   Es la misma clave que en la segunda mitad pegás en <code>.env</code>. Nunca la escribas en una celda.</li>
+<li><strong>Cuaderno, Parte 1 (10 min; lo que falte, en casa).</strong> <code>m1_python_de_cero.ipynb</code> (aula virtual) en <a href="https://colab.research.google.com/">Colab</a>: ejercicios 1 a 5, Python hablando con Gemini; cada uno dice ✅ o ❌ con pista.</li>
+<li><strong>El puente desde ML (10 min).</strong> La tabla de arriba y las probabilidades reales que da
+   un modelo a «La capital de Uruguay es»: «Monte» 99,6 % (<code>uv run python -m ejemplos.clase1 proximo</code>).</li>
+<li><strong>Cuaderno, Parte 2 (5 min).</strong> Ejercicios 6 y 7.</li>
+<li><strong>Cuaderno, Parte 3: tokens, temperatura y JSON (15 min).</strong> Ejercicios 8 y 9 (cada uno dice qué deberías ver); el 10, en casa.</li>
+<li>Colchón (5 min).</li>
+<li><strong>Recreo (19:35–19:45).</strong></li>
+<li><strong>Entorno guiado (35 min).</strong> Juntos, con la
+   hoja del entorno guiado: la misma clave, ahora en <code>.env</code>. Ver abajo.</li>
+<li><strong>Tokens, cómo se entrena y por qué inventa (10 min).</strong> Con salidas reales: cómo se corta el texto,
+   qué aprende en cada etapa y un libro que no existe, resumido con seguridad.</li>
+<li><strong>Tokens reales (5 min).</strong> En <a href="https://tiktokenizer.vercel.app/">Tiktokenizer</a>, sin el texto de <strong>System</strong>: «Los vecinos desconfiaban del nuevo plan.» y «The neighbors distrusted the new plan.».<ul>
+<li><strong>Qué deberías ver</strong> (gpt-4o): 9 y 8 tokens (más 11 <strong>tokens especiales del chat</strong>: 20 y 19). «desconfiaban» = <code>descon|fi|aban</code>: los tokens <strong>no son palabras</strong>, y el español usa más. Como el proveedor <strong>cobra por token</strong>, la misma pregunta en castellano cuesta un poco más (en la clase 2, la cuenta).</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://juanfkurucz.com/ucu-la/assets/guias/m1-tiktokenizer.png" alt="Tiktokenizer con gpt-4o: una frase de 11 tokens marcada en colores y, alrededor, los tokens especiales del chat; 22 en total"></p>
+<p>La captura es la frase de la slide, «Los estudiantes desconfiaban de las respuestas del modelo.», puesta como mensaje de sistema: 11 tokens más los 11 del chat, 22. Con tu frase te tienen que dar otros números.
+12. <strong>Laboratorio con el LLM real (15 min).</strong> Práctica M1: temperatura o idioma. Así se ve:</p>
+<p><img src="https://juanfkurucz.com/ucu-la/assets/guias/lab-m1-completo.png" alt="El laboratorio M1 al abrirlo: los tres pasos (predecí, corré, anotá), los dos experimentos, la caja para tu predicción y los controles"></p>
+<p>Después de <strong>Correr</strong> aparecen tres cifras (respuestas distintas, llamadas de esta corrida y saldo de 20), tu predicción al lado y una tabla con cada respuesta y sus tokens.
+13. <strong>Puesta en común (5 min).</strong> Las 4 propiedades (abajo).
+14. <strong>Cierre (5 min).</strong> Pensá un <strong>tema candidato</strong> para tu proyecto y respondé
+    el ticket, que es la <strong>microdefensa</strong> de M1: ¿qué contradijo tu predicción?
+15. Colchón (5 min).</p>
+<h3>El entorno, en una tabla</h3>
+<table>
+<thead>
+<tr>
+<th>Cosa</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Terminal</strong></td>
+<td>Ventana donde escribís órdenes en vez de hacer clic.</td>
+</tr>
+<tr>
+<td><strong>Repositorio</strong></td>
+<td>La carpeta del proyecto con su historial, como un Drive con versiones.</td>
+</tr>
+<tr>
+<td><strong>git / GitHub</strong></td>
+<td>git guarda versiones; GitHub las guarda en internet.</td>
+</tr>
+<tr>
+<td><strong>uv</strong></td>
+<td>Instala Python y las librerías exactas del proyecto.</td>
+</tr>
+<tr>
+<td><strong>Clave (API key)</strong></td>
+<td>La contraseña de tu cuenta en el proveedor. Con ella se paga cada pregunta.</td>
+</tr>
+<tr>
+<td><strong><code>.env</code></strong></td>
+<td>El archivo de la clave. Git lo ignora: nunca se sube.</td>
+</tr>
+<tr>
+<td><strong>Fixture</strong></td>
+<td>Una respuesta grabada, para probar sin internet ni clave.</td>
+</tr>
+</tbody>
+</table>
+<p>En la terminal (Windows: PowerShell; Mac: Terminal):</p>
+<pre><code class="language-bash">uv --version                          # ¿está uv?
+uv sync                               # instala todo
+uv run python check_setup.py --fixture  # prueba sin internet ni clave
+uv run python check_setup.py            # prueba con el modelo real
+</code></pre>
+<ul>
+<li><strong>Qué deberías ver:</strong> con <code>--fixture</code>, una respuesta grabada que empieza con <code>[FIXTURE</code> y sus tokens.</li>
+<li>Sin <code>--fixture</code>: el modelo, <code>.env ignorado por git: sí</code>, la respuesta, tokens y tiempo, <code>embeddings de Chroma …: listos</code> (la primera vez tarda: baja unos 80 MB) y <code>OK: entorno listo.</code></li>
+</ul>
+<p><strong>Para seguir alcanza</strong> con que <code>--fixture</code> responda. La clave se puede resolver después.</p>
+<h3>Las 4 propiedades de cualquier LLM</h3>
+<p><img src="https://juanfkurucz.com/ucu-la/assets/guias/cuatro-propiedades.svg" alt="Cuatro propiedades de un LLM, cada una con qué es, qué le va bien y qué le cuesta"></p>
+<table>
+<thead>
+<tr>
+<th>Propiedad</th>
+<th>Le va bien</th>
+<th>Le cuesta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Próximo token</strong>: escribe lo probable, pedazo a pedazo</td>
+<td>Resumir (y reformular, explicar)</td>
+<td>Datos precisos: nombres, cifras, citas</td>
+</tr>
+<tr>
+<td><strong>Conocimiento</strong>: lo que vio al entrenar</td>
+<td>Lo frecuente</td>
+<td>Lo reciente, local o raro</td>
+</tr>
+<tr>
+<td><strong>Memoria de trabajo</strong> (contexto): lo que le pasás, hasta un máximo</td>
+<td>Texto corto</td>
+<td>Un dato en el medio de uno largo</td>
+</tr>
+<tr>
+<td><strong>Seguir instrucciones</strong>: lo entrenaron con pedidos y respuestas</td>
+<td>Formato</td>
+<td>Cadenas largas de pasos (razonamientos largos)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Dato en el medio, medido: se encuentra mejor al principio o al final de un texto largo (<a href="https://arxiv.org/abs/2307.03172">Liu y otros, «Lost in the Middle»</a>). Lo probás en el «Para casa» de M1.</li>
+</ul>
+<p><strong>Familias:</strong></p>
+<ul>
+<li><strong>Cerrados</strong> (GPT, Claude, Gemini): por internet; tus datos salen de tu máquina.</li>
+<li><strong>Abiertos</strong> (Llama, Qwen): pueden correr en tu computadora; se publican los pesos, casi nunca los datos.</li>
+</ul>
+<h2>Si te trabás</h2>
+<table>
+<thead>
+<tr>
+<th>Problema</th>
+<th>Qué hacer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Colab: error rojo con <code>None</code> (<code>'NoneType' object is not iterable</code>, <code>KeyError: None</code>…)</td>
+<td>Falta completar esa celda o una anterior: los ejercicios 2 y 4 usan <code>r</code> del 1, y todos los que hablan con Gemini usan <code>modelo</code> de la celda de preparar.</td>
+</tr>
+<tr>
+<td>Colab, Parte 3: «No pude leer el secreto GOOGLE_API_KEY» o «Falta la clave»</td>
+<td>El secreto se llama exactamente <code>GOOGLE_API_KEY</code> y tiene activado <strong>Acceso del notebook</strong> (la llave de la izquierda). Después, volvé a correr la celda del <code>%pip</code>.</td>
+</tr>
+<tr>
+<td>Colab, Parte 3: <code>API key not valid</code> o <code>PERMISSION_DENIED</code></td>
+<td>La clave está mal copiada: copiala de nuevo en <a href="https://aistudio.google.com/apikey">AI Studio</a> y reemplazala en Secretos.</td>
+</tr>
+<tr>
+<td><code>uv</code> no se reconoce (Windows: «El término 'uv' no se reconoce como nombre de un cmdlet…»; Mac: <code>command not found: uv</code>)</td>
+<td>Cerrá y abrí la terminal. Si sigue, repetí el paso 1 de la hoja del entorno guiado (instalar <code>uv</code>).</td>
+</tr>
+<tr>
+<td><code>uv sync</code> tarda</td>
+<td>Normal la primera vez.</td>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError: No module named 'httpx'</code> (u otro nombre)</td>
+<td>Te faltó <code>uv run</code> adelante: va <code>uv run python check_setup.py</code>. Con <code>python</code> solo corre el Python de tu computadora, sin las librerías del proyecto.</td>
+</tr>
+<tr>
+<td>«Sin conexión con el proveedor del modelo…»</td>
+<td>No llega a internet (el wifi del aula, una VPN). Revisá la conexión y corré de nuevo. Mientras, <code>uv run python check_setup.py --fixture</code> y los tests andan sin red.</td>
+</tr>
+<tr>
+<td>«El proveedor rechazó la clave de .env…» (u otro error de clave en <code>check_setup</code>)</td>
+<td>Revisá <code>.env</code>: la clave va después del <code>=</code>, en el <strong>mismo renglón</strong> (<code>GOOGLE_API_KEY=</code> y la clave pegada). Las comillas no molestan; un espacio en el medio de la clave, sí. Mientras, seguí con <code>--fixture</code>.</td>
+</tr>
+<tr>
+<td><code>.env ignorado por git: NO</code></td>
+<td>No hagas <code>commit</code> y avisá.</td>
+</tr>
+<tr>
+<td><code>.env ignorado por git: no se pudo comprobar…</code></td>
+<td>Si dice «no es un repo git», bajaste el ZIP: cloná el repo con GitHub Desktop. Si dice «la terminal no encuentra git», es normal con GitHub Desktop: mirá que <code>.env</code> no aparezca en su pestaña <em>Changes</em>.</td>
+</tr>
+<tr>
+<td>«503: el proveedor está saturado…» (en Colab, un error con 503)</td>
+<td>Gemini está saturado: no es tu código ni tu cuota. Esperá un minuto y corré de nuevo; si sigue, hacé el experimento 2 (idioma), que usa otro modelo.</td>
+</tr>
+<tr>
+<td>La temperatura no cambia nada</td>
+<td>Tu modelo no la usa (Gemini 3.5 Flash-Lite, GPT-5, Claude 5.5): en «Modelo» poné <code>google_genai:gemini-3.1-flash-lite</code>. Si ese dice «503: el proveedor está saturado» (el 19/10 pasó toda una tarde), esperá un minuto; si sigue, hacé el experimento 2 de M1 (idioma), que anda con el modelo de base.</td>
+</tr>
+<tr>
+<td>El lab y Tiktokenizer dan otro número de tokens</td>
+<td>Es normal: cada proveedor tiene su tokenizador (la misma pregunta dio 28 tokens en Gemini y 45 en qwen), y Tiktokenizer suma los tokens del formato de chat: 11 si escribís la frase en lugar del mensaje de sistema (como la captura del deck 1); 16 si la escribís en «User» y dejás el de sistema que trae (medido el 19/10). Compará español contra inglés dentro de la misma herramienta.</td>
+</tr>
+</tbody>
+</table>
+<h2>Los ejemplos de las slides, para correr</h2>
+<p>Cada salida de modelo de las slides se reproduce con <code>uv run python -m ejemplos.clase1</code> y el nombre del ejemplo (sin nombre, la lista; el número es el del módulo). Qué pide y cuánto gasta cada uno: índice de ejemplos.</p>
+<h2>Sin mirar (2 min, al terminar)</h2>
+<ol>
+<li>¿En qué se parece un LLM a un clasificador de ML y en qué no? <em>(Para corregirte: «La idea central».)</em></li>
+<li>¿Qué cambia la temperatura y qué no? <em>(Para corregirte: «Temperatura».)</em></li>
+<li>¿Por qué un LLM puede inventar con seguridad? <em>(Para corregirte: «Por qué un LLM inventa».)</em></li>
+<li>¿Por qué con temperatura 0 la API igual puede darte respuestas distintas? <em>(Para corregirte: «Temperatura», al final.)</em></li>
+<li>¿Por qué la misma pregunta en castellano suele costar un poco más que en inglés? <em>(Para corregirte: «Paso a paso», paso 11.)</em></li>
+</ol>
+<h2>Palabras nuevas</h2>
+<p>LLM · token · tokenizador · tokens especiales del chat · próximo token · softmax · temperatura · muestrear · contexto · embedding ·
+alucinación · preentrenamiento · ajuste · terminal · repositorio · git · uv · marimo ·
+clave · <code>.env</code> · fixture · modelo cerrado / abierto · microdefensa. Están en el glosario.</p>
+<h2>Para la próxima (miércoles 28/10, virtual)</h2>
+<ol>
+<li><strong>Cuaderno</strong> terminado, sobre todo el <strong>ejercicio 10 (JSON)</strong>.</li>
+<li><strong>Para casa M1:</strong> una fila más en tu tabla del lab (práctica M1).</li>
+<li><strong><code>check_setup.py</code></strong> (sin <code>--fixture</code>) en <code>OK: entorno listo.</code> Si no, el error <strong>sin la clave</strong>, en el foro «Consultas» del aula virtual.</li>
+<li><strong>Sin lecturas ni cuestionario</strong> (de lunes a miércoles no da el tiempo). El primer <strong>iRAT</strong> (glosario) es en la clase 3.</li>
+</ol>

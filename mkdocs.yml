@@ -13,6 +13,7 @@ plugins:
   - glightbox
 nav:
   - Inicio: index.md
+  - Slides: slides/index.md
   - Prácticas:
     - "M1 · Fundamentos de LLMs": practicas/m1-laboratorio.md
     - "M2 · Prompt Engineering": practicas/m2-contrato-extraccion.md

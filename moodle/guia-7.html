@@ -1,0 +1,324 @@
+<h1>Clase 7 · Aprobación humana y producción</h1>
+<ul>
+<li>Miércoles 18/11 · virtual en vivo · 18:15–19:35 y 19:45–21:05.</li>
+<li>Temas: cierre de Multiagente (M7) y Producción y Buenas Prácticas (M8).</li>
+<li>
+<p>Slides de hoy (PDF en el aula virtual): M7 de la 12 a la 21 y M8 entera.</p>
+</li>
+<li>
+<p><strong>En resumen.</strong> Agregás una persona que aprueba o rechaza antes de responder.</p>
+</li>
+<li>Después te preguntás si lo liberarías: mirás la traza, calculás el costo y protegés en código tu peor fallo, con un test.</li>
+</ul>
+<h2>Dónde estamos</h2>
+<ul>
+<li>Tu asistente ya es un equipo con supervisor (<code>v05_equipo.py</code>).</li>
+<li>Hoy sumamos la última pieza, <strong>una persona que aprueba</strong>, y después: si lo usara gente de verdad, ¿lo liberarías?</li>
+<li>¿Con qué evidencia?</li>
+</ul>
+<h2>La historia en un minuto</h2>
+<ul>
+<li><strong>2023:</strong> OWASP (seguridad informática) publica la primera lista de riesgos
+  de apps con LLM. Aparecen herramientas de trazas, como LangSmith y Langfuse (sección 4).</li>
+<li><strong>2025:</strong> lista nueva (<a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10, lectura 3</a>); la <strong>inyección de prompt</strong>
+  sigue primera: es el texto 7 de la clase 2.</li>
+</ul>
+<p>Producción pasó de «que ande» a «que se pueda revisar, pagar y proteger».</p>
+<h2>Qué vas a poder hacer al final</h2>
+<ul>
+<li>Explicar cómo un grafo <strong>pausa</strong>, guarda su estado y <strong>retoma</strong> con la decisión de una persona.</li>
+<li>Decidir con la suite si el equipo vale lo que cuesta.</li>
+<li>Leer una <strong>traza</strong> y calcular el <strong>costo</strong> por consulta y por mes.</li>
+<li>Explicar un <strong>guardrail</strong> y probarlo con un <strong>test</strong>.</li>
+<li>Decidir <strong>go / no-go</strong> con evidencia.</li>
+</ul>
+<h2>Después de la clase: lecturas (20 min, opcionales)</h2>
+<ul>
+<li>De lunes a miércoles no da el tiempo para leer: en clase vemos lo esencial y estas lecturas lo amplían.</li>
+<li>Sirven para preparar la defensa.</li>
+</ul>
+<p><strong>1. <a href="https://langfuse.com/integrations/frameworks/langchain">Langfuse — LangChain integration</a></strong> · 10 min</p>
+<ul>
+<li><strong>Leé:</strong> en «Getting Started», la parte «Python SDK», que va primero, hasta su «See Traces in Langfuse» (la de JS/TS repite los pasos). Instalarlo es opcional.</li>
+<li><strong>Después, sin mirar:</strong> ¿qué aparece en una traza?</li>
+</ul>
+<p><strong>2. <a href="https://docs.langchain.com/oss/python/langchain/guardrails">LangChain — Guardrails</a></strong> · 5 min</p>
+<ul>
+<li><strong>Leé:</strong> «PII detection» y, en «Custom guardrails», «After agent guardrails». <code>v10_produccion.py</code> usa los dos.</li>
+<li><strong>Después, sin mirar:</strong> ¿cuándo corre un guardrail «after agent»?</li>
+</ul>
+<p><strong>3. <a href="https://genai.owasp.org/llm-top-10/">OWASP — Top 10 for LLM Applications</a></strong> · 5 min</p>
+<ul>
+<li><strong>Leé:</strong> los 10 títulos; elegí los dos que más aplican a tu sistema.</li>
+<li><strong>Después, sin mirar:</strong> ¿qué riesgo cubre tu guardrail?</li>
+</ul>
+<h2>1. La persona que aprueba: la firma antes de enviar</h2>
+<p>Antes de que el mail salga, alguien lo <strong>firma</strong>: <em>human-in-the-loop</em>.</p>
+<ol>
+<li><strong>Pausa.</strong> El grafo se detiene en <code>aprobar</code> y muestra el borrador:</li>
+</ol>
+<p><code>python
+   decision = interrupt({"borrador": estado["borrador"]})</code></p>
+<p>El <strong>estado</strong> queda guardado en el <strong>checkpointer</strong> (el cajón de la clase 4),
+   con la etiqueta de la conversación: el <code>thread_id</code>.</p>
+<ol start="2">
+<li>
+<p><strong>La persona decide.</strong> La carpeta (el estado, clase 6) espera en el cajón.</p>
+<ul>
+<li><code>InMemorySaver</code>: espera mientras el programa siga abierto.</li>
+<li>Horas o días: un checkpointer en una base, como <code>SqliteSaver</code> (<code>uv add langgraph-checkpoint-sqlite</code>; cómo se usa: <a href="https://docs.langchain.com/oss/python/langgraph/persistence">LangGraph — Persistence</a>). Probado el 18/10: otro programa retomó el mismo <code>thread_id</code>.</li>
+<li>Con hilos que sobreviven, la demo de <code>v05_equipo.py</code> avisa «El hilo … ya tiene una corrida» la segunda vez: cambiá el hilo o borrá la base.</li>
+</ul>
+</li>
+<li>
+<p><strong>Retomar</strong> con la misma etiqueta:</p>
+</li>
+</ol>
+<p><code>python
+   grafo.invoke(Command(resume={"aprobado": False}), config)  # mismo hilo</code></p>
+<pre><code>- Lo de `resume` es lo que devuelve `interrupt` (llega a `decision`).
+- Al retomar, `aprobar` corre **otra vez desde el principio**: antes del `interrupt`, nada que no deba repetirse, y sin `try`/`except` ([«Rules of interrupts»](https://docs.langchain.com/oss/python/langgraph/interrupts), lectura 3 de la guía 6).
+- Aprobado → `final` y sale la respuesta. Rechazado → termina **sin respuesta**.
+</code></pre>
+<p><strong>Ante la duda, no se firma:</strong> si no dice claramente «aprobado», el código
+asume que no (<code>decision.get("aprobado", False)</code>).</p>
+<h2>2. Paso a paso de la clase</h2>
+<ol>
+<li>Cierre del grafo (10 min): práctica M7, paso 3.</li>
+<li><strong>Taller: aprobación humana y comparación con v0.4 (40 min)</strong>: práctica M7, pasos 4 y 5.</li>
+<li><strong>Clínica de feedback 2 (20 min)</strong>: tu tabla agente solo vs equipo, una consulta donde el equipo ayudó y una donde no.<ul>
+<li>Referencia (Gemini 3.5 Flash-Lite, 3 corridas, 17/10): agente solo 12 de 12; equipo 8 de 9, 10 de 11 y 9 de 10 sin las cortadas por cuota. La 12 falló siempre <strong>en la selección</strong> (nunca llamó al analista).</li>
+</ul>
+</li>
+<li>Microdefensa (5 min).</li>
+<li>Colchón (5 min).</li>
+<li>Recreo (19:35–19:45).</li>
+<li>Pregunta sin apuntes (5 min): ¿qué no podrías explicar si fallara mañana?</li>
+<li>Repaso de producción (20 min): secciones 3 a 6, con la traza y el costo reales de v1.0.</li>
+<li><strong>Análisis de errores (10 min)</strong>: <code>uv run python -m ejemplos.clase8 errores logs/suite-v05.csv</code>; completás <code>primer_error</code> en el CSV que crea y la 2.ª vez cuenta por tipo.</li>
+<li><strong>Taller: v1.0 candidata (25 min)</strong>: práctica M8.</li>
+<li><strong>Go / no-go (10 min)</strong>: cada uno dice si lo liberaría y con qué evidencia (sección 7).</li>
+<li>Checklist de entrega (5 min).</li>
+<li>Colchón (5 min).</li>
+</ol>
+<h2>3. Producción: abrir la oficina al público</h2>
+<p><img src="https://juanfkurucz.com/ucu-la/assets/guias/produccion.svg" alt="Diagrama de producción: datos personales tapados, el agente, el fallo seguro, y la traza y el costo de cada consulta"></p>
+<p><strong>Producción</strong> es que la use gente que no conocés, sin que vos mires. Hace falta:</p>
+<table>
+<thead>
+<tr>
+<th>En una oficina abierta</th>
+<th>En tu sistema</th>
+<th>En <code>v10_produccion.py</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Libro de trámites</td>
+<td><strong>Traza</strong></td>
+<td>Un renglón por paso en <code>logs/traza.jsonl</code></td>
+</tr>
+<tr>
+<td>Factura</td>
+<td><strong>Costo por consulta</strong></td>
+<td>Tokens × precio, proyectado a un mes</td>
+</tr>
+<tr>
+<td>Alguien en la puerta</td>
+<td><strong>Guardrail</strong></td>
+<td>Tapa emails y avisa si algo falló</td>
+</tr>
+<tr>
+<td>Simulacros</td>
+<td><strong>Tests y suite</strong></td>
+<td><code>tests/</code> y tus suites</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Dónde falla la analogía:</strong> un guardrail solo revisa lo que programaste; lo
+que no previste, pasa.</p>
+<ul>
+<li><code>v10_produccion.py</code> = agente de <code>v0.4</code> + las tres primeras; los simulacros, en <code>tests/</code> y <code>suite.py</code>.</li>
+<li>Importa <code>SISTEMA</code> y topes de <code>v04_agente.py</code> y usa <code>herramientas.py</code>: lo de M6 llega solo.</li>
+<li>Lo propio de v1.0 (precios, <code>DECLARA_FALLO</code>), arriba del archivo.</li>
+</ul>
+<h2>4. Trazas: el libro de registro</h2>
+<p><img src="https://juanfkurucz.com/ucu-la/assets/guias/traza-pasos.svg" alt="Una traza de cinco pasos: la pregunta, el modelo con 343 tokens, la búsqueda en documentos, el modelo con 1025 tokens y la respuesta"></p>
+<ul>
+<li>Una <strong>traza</strong> es la historia de una consulta: qué herramienta pidió, con qué datos y cuántos tokens usó cada llamada.</li>
+<li>Responde «¿por qué contestó esto?» sin adivinar.</li>
+<li><strong>No</strong> guarda el texto de la pregunta (puede traer datos personales, sección 6), solo el hilo.</li>
+<li>
+<p>Sí guarda lo que el agente le pasó a cada herramienta (200 caracteres): puede repetir parte de la pregunta. Es un archivo que alguien puede leer.</p>
+</li>
+<li>
+<p><strong>Langfuse local</strong> (en Docker): la opción del curso; trazas en el navegador (lectura 1).</p>
+</li>
+<li>Pide bastante: para un servidor recomiendan 4 núcleos y 16 GB. Sin Docker o sin máquina, el JSONL.</li>
+<li><strong>Levantarlo</strong> (Docker Desktop abierto): cloná <code>https://github.com/langfuse/langfuse</code> (GitHub Desktop: <em>File → Clone repository → URL</em>), <code>docker compose up</code> en esa carpeta, y a los 2–3 min <code>http://localhost:3000</code>.</li>
+<li>Primera vez: <em>Sign up</em> (queda en tu máquina), organización, proyecto y sus claves (<em>API keys</em>). Ctrl+C lo apaga.</li>
+<li><strong>Conectarlo a v1.0</strong> (ya viene instalado): arriba, <code>from langfuse.langchain import CallbackHandler</code>; en <code>responder</code>, <code>"callbacks": [traza, CallbackHandler()]</code>.</li>
+<li>En <code>.env</code>: <code>LANGFUSE_PUBLIC_KEY</code>, <code>LANGFUSE_SECRET_KEY</code> y <code>LANGFUSE_BASE_URL=http://localhost:3000</code> (sin esa, van a la nube de Langfuse).</li>
+<li>Sin claves avisa «Authentication error: Langfuse client initialized without public_key. Client will be disabled…» y sigue: es la clave de Langfuse, no la del modelo; el JSONL se escribe igual.</li>
+<li><strong>JSONL</strong> (<code>v10_produccion.py</code>): texto, sin instalar nada. Cuenta igual como práctica de producción.</li>
+<li><strong>LangSmith</strong>: el de LangChain, en la nube y con cuenta; sin instalar, pero las trazas salen de tu máquina. No lo usamos.</li>
+</ul>
+<h2>5. Costo: la factura</h2>
+<p><img src="https://juanfkurucz.com/ucu-la/assets/guias/cache-decision.svg" alt="Una caché: llega la consulta; si es igual a una anterior, vuelve la respuesta guardada sin llamar al modelo; si no, responde el modelo y la respuesta se guarda. Riesgo: devolver algo viejo, o equivocado si compara por parecido"></p>
+<ul>
+<li>Cada respuesta trae tokens de <strong>entrada</strong> y de <strong>salida</strong>; los precios son por millón.</li>
+<li>Una consulta real a <code>v10_produccion.py</code> («¿Qué hace interrupt()?», Gemini 3.5 Flash-Lite, <code>uv run python -m ejemplos.clase8 traza</code>) usó 1207 tokens de entrada y 161 de salida.</li>
+<li>
+<p>Con precios de ejemplo (US$ 0,10 entrada, 0,40 salida):</p>
+</li>
+<li>
+<p>entrada: 1207 ÷ 1.000.000 × 0,10 = US$ 0,000121</p>
+</li>
+<li>salida: 161 ÷ 1.000.000 × 0,40 = US$ 0,000064</li>
+<li><strong>total: US$ 0,000185 por consulta</strong>; 1000 por día durante 30 días, unos <strong>US$ 5,55 por mes</strong>.</li>
+</ul>
+<p>Con los precios reales de Gemini 3.5 Flash-Lite (página de Gemini, 19/10, <em>Paid tier</em>, <em>Standard</em>: US$ 0,30
+entrada y 2,50 salida), la misma consulta cuesta US$ 0,000765 y el mes, unos <strong>US$ 23</strong>: cuatro veces más.</p>
+<ul>
+<li><strong>Tus precios</strong>, con fecha, en <code>PRECIO_ENTRADA</code>, <code>PRECIO_SALIDA</code> y <code>PRECIO_FECHA</code>: de la página del proveedor (<a href="https://ai.google.dev/gemini-api/docs/pricing">Gemini</a>, <a href="https://developers.openai.com/api/docs/pricing">OpenAI</a>), «per 1M tokens», <em>Paid tier</em> (Gemini: <em>Standard</em>). Cambian seguido.</li>
+<li>Decimal con <strong>punto</strong>: <code>PRECIO_ENTRADA = 0.10</code>. Con coma, <code>(0, 10)</code>: <code>v10_produccion.py</code> avisa antes de correr.</li>
+<li>Un agente hace <strong>varias</strong> llamadas: los 1207 de entrada ya son 326 + 881.</li>
+<li><strong>Bajar el costo:</strong> modelo más barato <strong>que pase tu suite</strong>, menos contexto (<code>K</code>), menos vueltas (tope de llamadas) o caché.</li>
+</ul>
+<p><strong>La caché, medida</strong> (<code>uv run python -m ejemplos.clase8 cache</code>, gpt-5.4-nano):</p>
+<ul>
+<li>1.ª vez: 1,31 s. Repetida: 0,00 s, sin modelo. Con «qué» en minúscula: 0,84 s, otra llamada.</li>
+<li>Compara texto exacto, modelo y configuración (otro modelo o temperatura, no reusa).</li>
+<li>Ojo: la guardada trae sus tokens viejos; sumarlos cuenta llamadas que no pagaste.</li>
+<li><strong>Caché semántica:</strong> devuelve la guardada si la pregunta se <strong>parece</strong> (embeddings). Ahorra más, pero puede contestar otra pregunta. Sin medir: si la elegís, medí cuánto acierta.</li>
+<li>Con lo de v0.2: cada pregunta y su respuesta en Chroma; antes de llamar al modelo, la más cercana; si la distancia es menor que tu umbral, la guardada.</li>
+</ul>
+<h2>6. Guardrails: alguien en la puerta</h2>
+<p>Un <strong>guardrail</strong> es una protección <strong>en código</strong> sobre lo que entra o sale.
+<code>v10_produccion.py</code> tiene dos:</p>
+<ol>
+<li><strong>Tapar datos personales</strong> (<em>PII</em>): un email en la pregunta → <code>[REDACTED_EMAIL]</code> antes de ir al modelo. En Uruguay, la <strong><a href="https://parlamento.gub.uy/documentosyleyes/leyes/ley/18331">Ley 18.331</a></strong>.<ul>
+<li><strong>Límite:</strong> solo revisa lo que escribe la persona. Un email de un documento o de la web pasa: para eso, <code>apply_to_tool_results=True</code>.</li>
+<li><strong>Detectores:</strong> email, tarjeta, IP, MAC y URL. La cédula uruguaya se agrega: <code>PIIMiddleware("cedula", detector=r"(?:\d\.?)?\d{3}\.?\d{3}-\d")</code> → <code>[REDACTED_CEDULA]</code>, con o sin puntos, también de 6 cifras (<code>123.456-7</code>). Sin guion (<code>12345678</code>) no la ve: si no, taparía montos como <code>3400000</code>.</li>
+<li><strong>Estrategias:</strong> <code>redact</code> (tapa; la de <code>v10_produccion.py</code>), <code>mask</code> (en parte: <code>**** **** **** 1111</code>; un email queda <code>ana.perez@****.com</code>, el nombre se ve), <code>hash</code> (código fijo, <code>&lt;email_hash:b8f11991&gt;</code>), <code>block</code> (corta con un error).</li>
+<li>Sin gastar: <code>uv run pytest tests/test_pii.py</code>, con modelo falso, comprueba email, cédula y costo: <code>7 passed</code>.</li>
+</ul>
+</li>
+<li><strong>Fallo seguro:</strong> si una herramienta dio ERROR y la respuesta no lo dice → «No pude completar la consulta: falló buscar_web. No invento el dato.» (nombra la que falló).<ul>
+<li>«No lo dice» = no aparece ninguna frase de <code>DECLARA_FALLO</code> («no pude», «falló», «error»…). La de Gemini con la web caída («…la búsqueda web devolvió un error…», clase 5) se respeta.</li>
+<li>¿Avisa con otras palabras («no tengo acceso a la web»)? Igual se reemplaza: sumá tus frases a la lista, entre comillas y con coma (sin coma, Python pega dos).</li>
+<li>Al revés también falla: busca pedazos de texto; una inventada que diga «publicada sin errores» contiene «error» y pasa.</li>
+</ul>
+</li>
+</ol>
+<p>Otro guardrail común es la <strong>moderación</strong>: revisar si lo que entra o sale es ofensivo o peligroso,
+a veces con un modelo clasificador. <code>v10_produccion.py</code> no la trae.</p>
+<ul>
+<li>«No inventes» en el prompt no alcanza: ya viste que inventa igual.</li>
+<li>
+<p><strong>El prompt es un pedido; el código es una garantía.</strong></p>
+</li>
+<li>
+<p>Cada garantía cubre <strong>un</strong> problema.</p>
+</li>
+<li>Si el agente ni llamó a la web y respondió de memoria, el fallo seguro no se entera.</li>
+<li>Por eso escribís un test para <strong>tu</strong> peor fallo.</li>
+</ul>
+<h3>Tests: el simulacro</h3>
+<ul>
+<li>Un <strong>test</strong> comprueba en código que algo se cumple. <code>tests/test_produccion.py</code> arma una conversación donde la web falló y el modelo inventó, y comprueba que el guardrail la reemplaza.</li>
+<li>No llama a ningún modelo: gratis y repetible.</li>
+</ul>
+<pre><code class="language-bash">uv run pytest tests/test_produccion.py
+</code></pre>
+<ul>
+<li><strong>Qué deberías ver:</strong> <code>4 passed</code>.</li>
+<li>Cuando sumes tu test (práctica M8, paso 3), uno más por cada test tuyo: <code>5 passed</code>.</li>
+<li>
+<p>Si dice <code>failed</code>, leé el <code>assert</code> que marca: ese es el fallo que no atajó.</p>
+</li>
+<li>
+<p>Lo que pide criterio («¿es correcta?») va a un <strong>modelo juez</strong> que responde sí o no; antes de confiar, comparalo con unas 20 respuestas anotadas por vos (<a href="https://hamel.dev/blog/posts/evals-faq/">Husain y Shankar, «LLM Evals FAQ»</a>).</p>
+</li>
+</ul>
+<h2>7. Go / no-go</h2>
+<ul>
+<li>En media página: <strong>¿lo liberarías hoy?</strong> Con la suite (¿empeoró frente a v0.5?), el costo mensual, el test y lo que falla.</li>
+<li>«Todavía no, porque…» es una respuesta válida.</li>
+<li>La forma está en la práctica M8, paso 5.</li>
+</ul>
+<h2>Si te trabás</h2>
+<table>
+<thead>
+<tr>
+<th>Problema</th>
+<th>Qué hacer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>El rechazo igual responde</td>
+<td>En <code>v05_equipo.py</code>, mirá la flecha que sale de <code>aprobar</code> (la línea <code>g.add_conditional_edges("aprobar", …)</code>: sin aprobación va a <code>END</code>) y el valor por defecto de <code>aprobado</code> en <code>aprobar</code> (tiene que ser <code>False</code>).</td>
+</tr>
+<tr>
+<td><code>IndentationError</code> al correr <code>tests/test_produccion.py</code> después de copiar el test de ejemplo (M8, paso 3)</td>
+<td>En <strong>cada</strong> renglón del test, borrá el «#» y el espacio que le sigue. Solo el «#»: «unindent does not match…». Solo el renglón del <code>def</code>: «expected an indented block after function definition on line N», marcado varios renglones más abajo; el N es el de tu <code>def</code>. Medido el 19/10.</td>
+</tr>
+<tr>
+<td>La suite dice «Ojo: N de M preguntas dieron ERROR» (M8, paso 1)</td>
+<td>Como en la guía 5: cuota, red, proveedor saturado o modelo mal escrito (con un 404, corregí <code>model</code> en <code>config.toml</code>). Esas filas no miden tu sistema: repetí la corrida más tarde.</td>
+</tr>
+<tr>
+<td>No aparece <code>logs/traza.jsonl</code></td>
+<td>La ruta exacta sale en la última línea («traza en …»). Si esa línea no aparece, el programa se cortó antes: leé el error. Si cortó al llamar al modelo (clave, cuota, red), el último renglón de la traza es <code>"tipo": "error"</code>, con el nombre del error.</td>
+</tr>
+<tr>
+<td>«CONSULTAS_POR_DIA va como entero, sin punto de miles»</td>
+<td>Pusiste <code>1.000</code> (mil, a la castellana): para Python es 1,0. Va <code>1000</code>.</td>
+</tr>
+<tr>
+<td>«PRECIO_ENTRADA y PRECIO_SALIDA van con punto decimal»</td>
+<td>Pusiste un precio con coma (<code>0,10</code>) o entre comillas (<code>"0.10"</code>). Va con punto y sin comillas: <code>0.10</code> (sección 5).</td>
+</tr>
+<tr>
+<td>El costo da 0 («OJO: el proveedor no informó tokens»)</td>
+<td>Ese modelo no informa tokens. Usá el de <code>config.toml</code>.</td>
+</tr>
+<tr>
+<td>«OJO: con caché, este costo cuenta también las respuestas guardadas»</td>
+<td>Prendiste la caché (M8, paso 4): la traza suma igual los tokens de lo que salió de la caché. Para ver el ahorro, compará tiempos, no ese costo (sección 5, «La caché, medida»).</td>
+</tr>
+<tr>
+<td>«OJO: son precios de ejemplo»</td>
+<td>Todavía no pusiste los de tu modelo: copialos con su fecha (<a href="#5-costo-la-factura">sección 5</a>).</td>
+</tr>
+<tr>
+<td><code>pytest</code> no se encuentra</td>
+<td><code>uv run pytest</code>.</td>
+</tr>
+<tr>
+<td>Un error del proveedor: «429…», «503…», «500 o 504», «Sin conexión…», «404…» o «sin saldo»</td>
+<td>Son los mismos de la clase 2 y se arreglan igual: «Si te trabás» de la guía 2, una fila por error.</td>
+</tr>
+</tbody>
+</table>
+<h2>Los ejemplos de las slides, para correr</h2>
+<p>Cada salida de modelo de las slides se reproduce con <code>uv run python -m ejemplos.clase8</code> y el nombre del ejemplo (sin nombre, la lista; el número es el del módulo). Qué pide y cuánto gasta cada uno: índice de ejemplos.</p>
+<h2>Sin mirar (2 min, al terminar)</h2>
+<ol>
+<li>¿Qué guarda el grafo mientras espera la aprobación? <em>(Para corregirte: «1. La persona que aprueba: la firma antes de enviar».)</em></li>
+<li>¿Por qué un guardrail va en código y no en el prompt? <em>(Para corregirte: «6. Guardrails: alguien en la puerta».)</em></li>
+<li>¿Qué no ataja el fallo seguro? <em>(Para corregirte: «6. Guardrails: alguien en la puerta», al final.)</em></li>
+<li>¿Por qué la caché puede inflar tu cálculo de costo? <em>(Para corregirte: «5. Costo: la factura» y el «OJO» de la caché en «Si te trabás».)</em></li>
+<li>En tu análisis de errores, ¿qué tipo de error fue el más frecuente? <em>(Para corregirte: tu CSV de «2. Paso a paso de la clase», paso 9.)</em></li>
+</ol>
+<h2>Palabras nuevas</h2>
+<p>human-in-the-loop · interrupt · retomar (resume) · traza · Langfuse · Docker ·
+costo por consulta · caché · caché semántica · LangSmith · guardrail · moderación · PII · Ley 18.331 · fallo seguro · test ·
+go / no-go · análisis de errores · modelo juez. Están en el glosario.</p>
+<h2>Para la próxima (lunes 23/11, presencial: última clase)</h2>
+<ol>
+<li><strong>Práctica M8</strong> y la lista de entrega (práctica M8).</li>
+<li><strong>4 entregables</strong> hasta el <strong>domingo 22/11, 23:59</strong> (propuesta): <code>docs/</code> en tu repo; al aula virtual, el enlace y el PDF de las slides (guía 8).</li>
+<li><strong>Presentación</strong> de 20 minutos; para las preguntas y el código, releé tus check-ins y sus comentarios.</li>
+</ol>

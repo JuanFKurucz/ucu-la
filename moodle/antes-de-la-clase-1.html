@@ -1,0 +1,178 @@
+<h1>Entorno guiado — clase 1, en el aula (35 min)</h1>
+<p><strong>Meta:</strong> irte de la clase 1 con <code>OK: entorno listo.</code> en pantalla. Lo hacemos
+juntos, cada uno en su computadora, con el docente al lado. No hace falta saber usar la
+terminal: acá está todo.</p>
+<h2>Antes de empezar: la terminal en 2 minutos</h2>
+<p>La <strong>terminal</strong> es una ventana donde escribís órdenes y apretás Enter.</p>
+<ul>
+<li><strong>Windows:</strong> tecla Windows → escribí <code>PowerShell</code> → Enter.</li>
+<li><strong>Mac:</strong> Cmd + Espacio → escribí <code>Terminal</code> → Enter.</li>
+</ul>
+<p>Tres órdenes que vas a usar:</p>
+<table>
+<thead>
+<tr>
+<th>Orden</th>
+<th>Qué hace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cd nombre-de-carpeta</code></td>
+<td>Entra a una carpeta. <code>cd ..</code> vuelve una atrás.</td>
+</tr>
+<tr>
+<td><code>ls</code> (Mac) o <code>dir</code> (Windows)</td>
+<td>Muestra lo que hay en la carpeta donde estás.</td>
+</tr>
+<tr>
+<td>Flecha arriba</td>
+<td>Repite la última orden.</td>
+</tr>
+</tbody>
+</table>
+<p>Si algo no anda, <strong>copiá el mensaje completo</strong> y mostralo. Los mensajes de
+error casi siempre dicen qué pasó.</p>
+<h2>Pasos</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">#</th>
+<th>Paso</th>
+<th style="text-align: right;">Min</th>
+<th>Listo cuando…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td>Instalá <a href="https://docs.astral.sh/uv/"><code>uv</code></a>: copiá el comando de tu sistema («Paso 1, el comando», abajo) y pegalo en la terminal. Cerrá y abrí la terminal.</td>
+<td style="text-align: right;">5</td>
+<td><code>uv --version</code> muestra un número</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td>Instalá <a href="https://desktop.github.com/">GitHub Desktop</a> e iniciá sesión. Bajá del aula virtual el <strong>proyecto base</strong> (<code>proyecto-llms.zip</code>) y descomprimilo en una carpeta <strong>fuera de OneDrive</strong> (o, en Mac, de iCloud Drive), como <code>C:\proyectos\llms</code>. En GitHub Desktop: <strong>File → Add local repository</strong> → elegí esa carpeta → <strong>create a repository</strong> → <strong>Publish repository</strong> con <strong>Keep this code private</strong> marcado. Después, en github.com, en tu repo: <strong>Settings → Collaborators</strong> → invitá a <strong>JuanFKurucz</strong> (el docente); con las librerías, el proyecto suma unos 27 000 archivos (660 MB) que no conviene sincronizar.</td>
+<td style="text-align: right;">10</td>
+<td>Tenés tu repo privado en GitHub y una carpeta con <code>check_setup.py</code> adentro</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td>En la terminal, <code>cd</code> hasta esa carpeta. Después <code>uv sync</code> y <code>uv run python check_setup.py --fixture</code></td>
+<td style="text-align: right;">10</td>
+<td>Aparece una respuesta que empieza con <code>[FIXTURE</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td>Copiá <code>.env.example</code> con el nombre <code>.env</code>, abrilo con un editor de texto (Bloc de notas sirve), pegá la clave <strong>solo</strong> ahí y guardá: la misma que guardaste en los Secretos de Colab en el cuaderno (si no la tenés, en <a href="https://aistudio.google.com/apikey">AI Studio</a> → <strong>Create API key</strong>). Corré <code>uv run python check_setup.py</code></td>
+<td style="text-align: right;">5</td>
+<td>Dice <code>OK: entorno listo.</code></td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td>Leé las 3 reglas de abajo</td>
+<td style="text-align: right;">5</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Paso 1, el comando</strong> (de la <a href="https://docs.astral.sh/uv/getting-started/installation/">página de uv</a>, que muestra varias formas: usá esta).
+Windows, en PowerShell:</p>
+<pre><code class="language-powershell">powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;
+</code></pre>
+<p>Mac, en Terminal:</p>
+<pre><code class="language-bash">curl -LsSf https://astral.sh/uv/install.sh | sh
+</code></pre>
+<p><strong>Paso 3, llegar a la carpeta sin escribir la ruta.</strong> Windows: abrí la carpeta
+en el Explorador, hacé clic en la barra de direcciones, escribí <code>powershell</code> y
+Enter: se abre la terminal ya parada ahí. Mac: escribí <code>cd</code> (con un espacio),
+arrastrá la carpeta a la ventana de la Terminal y apretá Enter.</p>
+<p><strong>Paso 3, qué deberías ver:</strong> <code>uv sync</code> muestra una lista de librerías que
+instala (la primera vez tarda 1 o 2 minutos). <code>check_setup.py --fixture</code>
+responde con una respuesta grabada. Eso prueba que Python y las librerías
+funcionan, sin usar internet ni gastar.</p>
+<p><strong>Paso 4, si no podés crear <code>.env</code></strong> desde el explorador de archivos, hacelo en
+la terminal: <code>copy .env.example .env</code> (Windows) o <code>cp .env.example .env</code> (Mac).
+Para abrirlo, también desde la terminal: <code>notepad .env</code> (Windows) o
+<code>open -e .env</code> (Mac). En Mac, Finder no muestra los archivos que empiezan con
+punto (Cmd + Shift + . los muestra). Ojo: el Bloc de notas a veces guarda
+como <code>.env.txt</code>. Si <code>dir</code> muestra <code>.env.txt</code>, renombralo: <code>ren .env.txt .env</code>.</p>
+<p><strong>Paso 4, qué deberías ver:</strong> el nombre del modelo, <code>.env ignorado por git: sí</code>,
+una respuesta de una frase, cuántos tokens usó, <code>embeddings de Chroma …: listos</code> (la primera vez baja unos 80 MB y tarda) y <code>OK: entorno listo.</code></p>
+<h2>3 reglas</h2>
+<ol>
+<li><strong>La clave no sale de <code>.env</code>:</strong> ni al código, ni al chat de un asistente, ni a una captura.</li>
+<li><strong>Datos personales no van a la API.</strong> Los documentos del proyecto son públicos o autorizados.</li>
+<li><strong>Cuidá el saldo y la cuota:</strong> <code>config.toml</code> limita la salida a 300 tokens; no lo subas sin motivo.
+   Con la clave gratis de Gemini tenés <strong>500 pedidos por día</strong> por modelo (lo agotamos el 17/10): una
+   corrida de la suite con agente gasta decenas. Corré la suite cuando cambiaste algo, no «por las dudas».</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Corrida (medida el 17/10, Gemini 3.5 Flash-Lite)</th>
+<th style="text-align: right;">Pedidos al modelo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>v01_api.py</code> (5 preguntas y el error a propósito)</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td>Suite M4 con RAG (13 preguntas)</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td>Suite de selección con v0.4 (12 preguntas × 2,7)</td>
+<td style="text-align: right;">≈ 32</td>
+</tr>
+<tr>
+<td>Suite de selección con v0.5 (12 preguntas × 6,9)</td>
+<td style="text-align: right;">≈ 83</td>
+</tr>
+</tbody>
+</table>
+<h2>¿Falló?</h2>
+<table>
+<thead>
+<tr>
+<th>Mensaje</th>
+<th>Qué hacer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uv</code> no se reconoce</td>
+<td>Cerrá y volvé a abrir la terminal. Si sigue, reinstalá.</td>
+</tr>
+<tr>
+<td><code>No such file</code> o <code>no se encuentra check_setup.py</code></td>
+<td>No estás en la carpeta del proyecto: usá <code>cd</code>.</td>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError: No module named 'httpx'</code> (u otro nombre)</td>
+<td>Te faltó <code>uv run</code> adelante: <code>uv run python check_setup.py</code>. Con <code>python</code> solo corre el Python de tu computadora, sin las librerías del proyecto.</td>
+</tr>
+<tr>
+<td><code>.env ignorado por git: NO</code></td>
+<td>No subas nada a GitHub (no hagas <code>commit</code>) y avisá.</td>
+</tr>
+<tr>
+<td><code>.env ignorado por git: no se pudo comprobar…</code></td>
+<td>Si dice «no es un repo git», bajaste el ZIP: cloná el repo con GitHub Desktop (paso 2) y corré de nuevo. Si dice «la terminal no encuentra git», es normal con GitHub Desktop: mirá que <code>.env</code> no aparezca en su pestaña <em>Changes</em>.</td>
+</tr>
+<tr>
+<td>Error de clave («API key not valid»: en Gemini es un 400; en otros proveedores, 401) o «Falta la clave»</td>
+<td>La clave va después del <code>=</code>, en el mismo renglón (<code>GOOGLE_API_KEY=</code> y la clave pegada), sin espacios en el medio; las comillas no molestan. Seguí con <code>--fixture</code> y mandá el error exacto, <strong>sin la clave</strong>, al foro «Consultas» del aula virtual. Se resuelve antes de la clase 2.</td>
+</tr>
+<tr>
+<td>Error de red o <em>timeout</em></td>
+<td>Seguí con <code>--fixture</code> y probá de nuevo en casa.</td>
+</tr>
+<tr>
+<td><code>429 RESOURCE_EXHAUSTED</code> que dice «PerDay» (o «per day»)</td>
+<td>Se terminó la cuota gratis del día: no reintentes. Esperá al otro día o cambiá de modelo en <code>config.toml</code>.</td>
+</tr>
+</tbody>
+</table>
