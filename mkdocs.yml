@@ -1,0 +1,37 @@
+site_name: "LLMs en Acción — Universidad Católica del Uruguay"
+site_url: https://juanfkurucz.com/ucu-la/
+repo_url: https://github.com/JuanFKurucz/ucu-la
+theme:
+  name: material
+  language: es
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - content.code.copy
+plugins:
+  - search
+  - glightbox
+nav:
+  - Inicio: index.md
+  - Prácticas:
+    - "M1 · Fundamentos de LLMs": practicas/m1-laboratorio.md
+    - "M2 · Prompt Engineering": practicas/m2-contrato-extraccion.md
+    - "M3 · APIs y Ecosistema": practicas/m3-v01-api.md
+    - "M4 · RAG (Retrieval-Augmented Generation)": practicas/m4-v02-rag.md
+    - "M5 · LangChain / LlamaIndex": practicas/m5-v03-framework.md
+    - "M6 · Agentes y Herramientas": practicas/m6-v04-agente.md
+    - "M7 · Sistemas Multiagente": practicas/m7-v05-multiagente.md
+    - "M8 · Producción y Buenas Prácticas": practicas/m8-v10-produccion.md
+  - Plantillas:
+    - "Evidencia de cada versión": plantillas/evidencia-version.md
+    - "Registro de evaluación": plantillas/registro-evaluacion.md
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
