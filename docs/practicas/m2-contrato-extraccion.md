@@ -129,4 +129,4 @@ En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): tabla, c
 ## Microdefensa
 
 - ¿Qué error **no** detecta el molde? ¿Cómo lo atraparías con código?
-- Confianza del 1 al 4.
+- Confianza del 1 («no lo sabría explicar») al 4 («lo explico solo»).
