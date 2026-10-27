@@ -19,11 +19,11 @@
 - **Tu repo** del proyecto. Creás `v01_api.py` en la carpeta del proyecto, al lado de `llm.py`.
 - **El contrato** (README de tu repo): `responder(pregunta)` devuelve un `dict` con `respuesta`, `tokens_entrada`, `tokens_salida` y `latencia_s`; cada pregunta deja un renglón en `logs/v01.jsonl`.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
-- **IA:** podés pedirle ayuda a un asistente, pero cada renglón lo tenés que poder explicar.
+- **Con tu asistente de IA** (el que usás para programar): pegale cada paso y pedile «explicame cada renglón y dónde va en mi archivo». Corré, compará con «Qué deberías ver» y, si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.
 
 ## Arranque
 
-1. **Las perillas.** Arriba de todo, el mensaje del sistema y tus preguntas: cambiá las de ejemplo por **5 de tu tema**, cada una entre comillas y separadas con coma.
+1. **Las perillas.** Arriba de todo, el mensaje del sistema y tus preguntas: cambiá las de ejemplo por **5 de tu tema**, entre comillas y con coma.
 
     ```python
     import json, os, time
@@ -33,7 +33,7 @@
     modelo = cargar_modelo()  # el de config.toml
     ```
 
-    Corré `uv run python v01_api.py`. **Qué deberías ver:** nada, sin errores. Si falta la clave o `config.toml` está mal escrito, `cargar_modelo()` te lo dice en castellano.
+    Corré `uv run python v01_api.py`. **Qué deberías ver:** nada, sin errores. Si falta la clave o algo está mal, `cargar_modelo()` te lo dice.
 
 2. **`responder()`.** Abajo, la función: manda la pregunta, muestra la respuesta de a pedazos (*streaming*), los junta y mide.
 
@@ -50,7 +50,7 @@
 
     Agregá al final `print(responder(PREGUNTAS[0]))` y corré. **Qué deberías ver:** la respuesta, de a poco, y abajo algo como `{'respuesta': '…', 'latencia_s': 1.2, 'tokens_entrada': 31, 'tokens_salida': 40}`.
 
-3. **Las 5 y el log.** Cambiá ese `print` por el bucle: cada pregunta tiene un reintento si falla, y su resultado (o su error) queda en un renglón de `logs/v01.jsonl`.
+3. **Las 5 y el log.** Cambiá ese `print` por el bucle: un reintento si falla, y cada resultado (o error) en un renglón de `logs/v01.jsonl`.
 
     ```python
     os.makedirs("logs", exist_ok=True)  # la primera vez no existe
@@ -69,7 +69,7 @@
                                 ensure_ascii=False) + "\n")
     ```
 
-    **Qué deberías ver:** las 5 respuestas, cada una debajo de su `>`. En `logs/v01.jsonl` (abrilo en VS Code), 5 renglones con `modelo`, `tokens_entrada`, `tokens_salida` y `latencia_s`.
+    **Qué deberías ver:** las 5 respuestas, cada una debajo de su `>`. El log es una tabla, una fila por pregunta: en `logs/v01.jsonl` (abrilo en VS Code), 5 renglones con `modelo`, `tokens_entrada`, `tokens_salida` y `latencia_s`.
 
 **Primer control · 10–15 min:** el log tiene modelo, tokens y latencia de tus 5 preguntas.
 

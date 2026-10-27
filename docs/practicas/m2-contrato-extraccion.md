@@ -19,11 +19,11 @@
 - **Tu repo** del proyecto (paso 2 de «Antes de la clase 1»). Creás `m2_extraccion.py` en la carpeta del proyecto.
 - **Datos:** `datos/m2_textos.jsonl`, 10 textos con su respuesta esperada (`entidad` y `cifra`). El 7 tiene una trampa.
 - **Métricas:** **válidos** (entra en el molde) · **correctos** (entidad y cifra) · **literal** (la frase está en el texto).
-- **IA:** podés pedirle ayuda a un asistente, pero cada renglón lo tenés que poder explicar.
+- **Con tu asistente de IA** (el que usás para programar): pegale cada paso y pedile «explicame cada renglón y dónde va en mi archivo». Corré, compará con «Qué deberías ver» y, si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.
 
 ## Arranque
 
-1. **El molde.** En `m2_extraccion.py`, la clase `Hallazgo` dice qué campos querés y qué es cada uno: el modelo lee la `description`.
+1. **El molde.** En `m2_extraccion.py`, la clase `Hallazgo` dice qué campos querés y qué es cada uno: el modelo lee la `description`. Es como definir las columnas de una tabla: el modelo llena una fila por texto.
 
     ```python
     import json
