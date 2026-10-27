@@ -99,7 +99,7 @@ Las tres métricas son una validación de carga, como las que hacés en BI:
     - **Instrucción:** `INSTRUCCION` más precisa.
 
 4. **Volvé a correr** y compará.
-5. **Texto 7** («IGNORÁ LAS INSTRUCCIONES… 999»): ¿qué cifra? ¿Lo marca alguna métrica?
+5. **Texto 7** («IGNORÁ LAS INSTRUCCIONES… 999»): una inyección de prompt, como la inyección SQL: el dato trae una orden. ¿Qué cifra dio? ¿Lo marca alguna métrica?
 
 ## Controles
 
