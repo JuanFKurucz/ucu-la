@@ -16,7 +16,7 @@
 
 ## Punto de partida
 
-- **Tu repo** del proyecto. Creás `v01_api.py` en la carpeta del proyecto, al lado de `llm.py`.
+- **Tu repo** del proyecto ([plantilla](https://github.com/JuanFKurucz/ucu-la-project)). Creás `v01_api.py` en la carpeta del proyecto, al lado de `llm.py`.
 - **El contrato** (README de tu repo): `responder(pregunta)` devuelve un `dict` con `respuesta`, `tokens_entrada`, `tokens_salida` y `latencia_s`; cada pregunta deja un renglón en `logs/v01.jsonl`.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 - **Con tu asistente de IA** (el que usás para programar): pegale cada paso y pedile «explicame cada renglón y dónde va en mi archivo». Corré, compará con «Qué deberías ver» y, si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.

@@ -16,7 +16,7 @@
 
 ## Punto de partida
 
-- **Tu repo** del proyecto (paso 2 de «Antes de la clase 1»). Creás `m2_extraccion.py` en la carpeta del proyecto.
+- **Tu repo** del proyecto, creado desde la [plantilla](https://github.com/JuanFKurucz/ucu-la-project). Creás `m2_extraccion.py` en la carpeta del proyecto.
 - **Datos:** `datos/m2_textos.jsonl`, 10 textos, uno por renglón, cada uno con su respuesta esperada (`entidad` y `cifra`): una tabla con la columna del resultado correcto. El 7 tiene una trampa.
 - **Con tu asistente de IA** (el que usás para programar): pegale cada paso y pedile «explicame cada renglón y dónde va en mi archivo». Corré, compará con «Qué deberías ver» y, si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.
 

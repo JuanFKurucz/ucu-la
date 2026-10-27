@@ -4,6 +4,8 @@ Maestría en Ciencia de Datos, Universidad Católica del Uruguay. Una práctica 
 
 Clase 1: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_python_de_cero.ipynb) Python desde cero (cuaderno de la clase 1)
 
+**Tu proyecto** arranca desde la plantilla [ucu-la-project](https://github.com/JuanFKurucz/ucu-la-project): *Use this template*, repo privado. Cada práctica desde la M2 escribe una parte de tu proyecto.
+
 | Clase | Módulo | Práctica | Cuaderno |
 |---|---|---|---|
 | 1 · lun 26/10 | M1 · Fundamentos de LLMs | [Laboratorio de comportamiento](practicas/m1-laboratorio.md) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m1_laboratorio.ipynb) |
