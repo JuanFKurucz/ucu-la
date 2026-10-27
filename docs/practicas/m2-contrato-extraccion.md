@@ -2,7 +2,7 @@
 
 | Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
-| M2 | 2 | 30 min | A2 |
+| M2 | 2 | 30 min | como copiloto: escribe con vos y vos lo explicás (A2) |
 
 **Entregás:** m2_extraccion.py en el repo, tabla línea de base vs tu cambio, caso de inyección, decisión.
 

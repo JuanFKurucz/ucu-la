@@ -2,7 +2,7 @@
 
 | Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
-| M7 | 6 | 110 min | A2 |
+| M7 | 6 | 110 min | como copiloto: escribe con vos y vos lo explicás (A2) |
 
 **Entregás:** v0.5 en el repo, diagrama del grafo, prueba de rechazo, tabla agente único vs equipo.
 

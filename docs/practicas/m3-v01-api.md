@@ -2,7 +2,7 @@
 
 | Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
-| M3 | 2 | 25 min | A2 |
+| M3 | 2 | 25 min | como copiloto: escribe con vos y vos lo explicás (A2) |
 
 **Entregás:** v0.1 en el repo, tabla de las dos configuraciones, decisión de configuración, estimación de costo.
 

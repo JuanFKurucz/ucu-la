@@ -2,7 +2,7 @@
 
 | Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
-| M6 | 5 | 105 min | A2 |
+| M6 | 5 | 105 min | como copiloto: escribe con vos y vos lo explicás (A2) |
 
 **Entregás:** v0.4 en el repo, suite de selección propia, 2 corridas, fallo manejado.
 

@@ -2,7 +2,7 @@
 
 | Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
-| M8 | 7 | 25 min | A3 |
+| M8 | 7 | 25 min | como co-diseñadora: propone, vos decidís (A3) |
 
 **Entregás:** v1.0 en el repo, extracto de la traza en la evidencia, costo por consulta y por mes, test del guardrail, decisión go/no-go.
 

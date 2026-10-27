@@ -2,7 +2,7 @@
 
 | Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
-| M1 | 1 | 15 min | A1 |
+| M1 | 1 | 15 min | como tutora: te explica (A1) |
 
 **Entregás:** diagnóstico del cuaderno, fila de 1 experimento.
 
