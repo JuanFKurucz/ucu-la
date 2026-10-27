@@ -80,7 +80,7 @@
 - **«config.toml está mal escrito»:** los textos van entre comillas rectas (`model = "google_genai:gemini-3.5-flash-lite"`) y los decimales con punto (`temperature = 0.5`).
 - **«429: se terminó la cuota del día…»:** reintentar no sirve. Esperá a que se renueve o cambiá de modelo en `config.toml`.
 - **`Error (intento 1 de 2): TypeError`:** ese modelo no devolvió los tokens. Volvé a `google_genai:gemini-3.5-flash-lite`.
-- **Otro mensaje:** copialo tal cual en el foro «Consultas» del aula virtual.
+- **Otro mensaje:** pegalo en el foro «Consultas».
 
 </details>
 
@@ -97,7 +97,9 @@
     print(grupos.agg({"tokens_entrada": "mean", "tokens_salida": "mean", "latencia_s": "median"}).round(1).to_string())
     ```
 
-    **Qué deberías ver:** una fila por configuración: tokens promedio y latencia mediana (la primera llamada suele tardar más). El modelo que no existe sale con `NaN`: sin respuestas no hay tokens.
+    Es un `GROUP BY modelo` con promedios y mediana, como «Agrupar por» en Power BI.
+
+    **Qué deberías ver:** una fila por configuración: tokens promedio y latencia mediana. El modelo que no existe sale con `NaN`: sin respuestas no hay tokens.
 
 5. **Decidí** con qué configuración te quedás y dejala puesta.
 
@@ -125,7 +127,7 @@ En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): la tabla
 
 costo por pregunta = tokens de entrada × precio de entrada / 1.000.000 + tokens de salida × precio de salida / 1.000.000
 
-costo por mes = costo por pregunta × 1000 × 30 (la misma cuenta que hace v1.0 en la clase 7)
+costo por mes = costo por pregunta × 1000 × 30
 
 En Python: `1_000_000`, y `print(f"{costo:.7f}")` para ver los decimales.
 
