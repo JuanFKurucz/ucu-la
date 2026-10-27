@@ -17,9 +17,16 @@
 ## Punto de partida
 
 - **Tu repo** del proyecto (paso 2 de «Antes de la clase 1»). Creás `m2_extraccion.py` en la carpeta del proyecto.
-- **Datos:** `datos/m2_textos.jsonl`, 10 textos con su respuesta esperada (`entidad` y `cifra`). El 7 tiene una trampa.
-- **Métricas:** **válidos** (entra en el molde) · **correctos** (entidad y cifra) · **literal** (la frase está en el texto).
+- **Datos:** `datos/m2_textos.jsonl`, 10 textos, uno por renglón, cada uno con su respuesta esperada (`entidad` y `cifra`): una tabla con la columna del resultado correcto. El 7 tiene una trampa.
 - **Con tu asistente de IA** (el que usás para programar): pegale cada paso y pedile «explicame cada renglón y dónde va en mi archivo». Corré, compará con «Qué deberías ver» y, si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.
+
+Las tres métricas son una validación de carga, como las que hacés en BI:
+
+| Métrica | Qué cuenta | En BI sería |
+|---|---|---|
+| **válidos** | lo que devolvió entra en el molde | filas que cargan sin error de tipo |
+| **correctos** | entidad y cifra iguales a las esperadas | filas que cuadran con la referencia |
+| **literal** | la frase citada está en el texto | cada dato con su fuente |
 
 ## Arranque
 
@@ -49,7 +56,7 @@
 
     **Qué deberías ver:** `entidad='Transportes del Sur' cifra=18.0 fuente_textual='sumó 18 ómnibus eléctricos…'`.
 
-3. **Los 10 y las métricas.** Cambiá el `print` del paso 2 por esto y corré de nuevo:
+3. **Los 10 y las métricas.** Por cada texto: extrae, compara con lo esperado y suma a cada métrica (un `COUNT` con condición). Cambiá el `print` del paso 2 por esto y corré de nuevo:
 
     ```python
     validos = correctos = literal = 0
@@ -85,7 +92,7 @@
 ## En clase
 
 1. **Predecí** cuántos correctos. Mirá los textos 9 (cifra con letras), 2 y 5 (millones, miles), 4 y 10 (sin cifra) y 7.
-2. **Línea de base:** sin ejemplos. Anotá las tres métricas.
+2. **Línea de base:** sin ejemplos, como el modelo base en ML: primero medís sin tocar nada. Anotá las tres métricas.
 3. **Cambiá UNA cosa:**
     - **Few-shot:** 1 o 2 ejemplos inventados en `EJEMPLOS`, como `"«La ONG Sur plantó 300 árboles.» → entidad: ONG Sur, cifra: 300"`.
     - **Molde:** mejor `description` de un campo.
@@ -109,7 +116,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): tabla, cambio, texto 7, **decisión** y **límite**. Subí también `m2_extraccion.py`.
+En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): tabla, cambio, texto 7, **decisión** (con qué forma de pedir te quedás) y **límite** (un error que tus métricas no ven). Subí también `m2_extraccion.py`.
 
 ## Para casa
 
