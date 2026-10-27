@@ -129,7 +129,7 @@ costo por pregunta = tokens de entrada × precio de entrada / 1.000.000 + tokens
 
 costo por mes = costo por pregunta × 1000 × 30
 
-En Python: `1_000_000`, y `print(f"{costo:.7f}")` para ver los decimales.
+Sale en una planilla, una celda por término. En Python: `1_000_000`, `print(f"{costo:.7f}")`.
 
 ## Microdefensa
 
