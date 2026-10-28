@@ -38,7 +38,8 @@ El hilo es como la clave de un cliente en una tabla de ventas: cada mensaje se g
     @dynamic_prompt
     def con_contexto(pedido: ModelRequest) -> str:  # corre antes de cada llamada al modelo
        hits = buscar(pedido.messages[-1].text)  # busca solo con el último mensaje
-       fuentes[:] = dict.fromkeys(h["doc"] for h in hits)
+       fuentes.clear()  # las de la pregunta anterior, fuera
+       fuentes.extend(dict.fromkeys(h["doc"] for h in hits))  # cada documento una vez, como un DISTINCT
        contexto = "\n\n".join(f"[{h['doc']}]\n{h['texto']}" for h in hits)
        return f"{SISTEMA}\n\nContexto:\n{contexto}"
     asistente = create_agent(cargar_modelo(), tools=[], middleware=[con_contexto], checkpointer=InMemorySaver())

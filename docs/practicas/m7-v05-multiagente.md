@@ -45,6 +45,11 @@ El grafo es un flujo de Power Automate escrito en código: cada `add_node` es un
        return {"siguiente": next((n for n in ("investigador", "analista") if n in r and len(e["notas"]) < 3), "redactor")}
     ```
 
+    Dos renglones para leer despacio:
+
+    - `lambda e: {…}` es una función de una línea: recibe el estado `e` y devuelve la nota del agente.
+    - `next((n for n in ("investigador", "analista") if …), "redactor")` es un `CASE WHEN` de SQL: si la respuesta nombra a uno de los dos (y hay menos de 3 notas), va ese; si no, `ELSE 'redactor'`.
+
 2. **El redactor, la aprobación y el grafo.** `interrupt` pausa el grafo; el *checkpointer* guarda el estado mientras espera:
 
     ```python
