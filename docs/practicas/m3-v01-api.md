@@ -97,7 +97,6 @@
     print(grupos.agg({"tokens_entrada": "mean", "tokens_salida": "mean", "latencia_s": "median"}).round(1).to_string())
     ```
 
-    Es un `GROUP BY modelo` con promedios y mediana, como «Agrupar por» en Power BI.
 
     **Qué deberías ver:** una fila por configuración: tokens promedio y latencia mediana. El modelo que no existe sale con `NaN`: sin respuestas no hay tokens.
 
