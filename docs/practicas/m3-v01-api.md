@@ -19,7 +19,7 @@
 - **Tu repo** del proyecto ([plantilla](https://github.com/JuanFKurucz/ucu-la-project)). Creás `v01_api.py` al lado de `llm.py`.
 - **El contrato** (README de tu repo): `responder(pregunta)` devuelve un `dict` con `respuesta`, `tokens_entrada`, `tokens_salida` y `latencia_s`; cada pregunta deja un renglón en `logs/v01.jsonl`.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
-- **Con tu asistente de IA** (el que usás para programar): pegale cada paso y pedile «explicame cada renglón». Si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.
+- **Con tu asistente de IA:** pegale cada paso y pedile «explicame cada renglón». Si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.
 
 ## Arranque
 
@@ -69,7 +69,7 @@
                                 ensure_ascii=False) + "\n")
     ```
 
-    **Qué deberías ver:** las 5 respuestas, cada una debajo de su `>`. El log es una tabla, una fila por pregunta: en `logs/v01.jsonl` (abrilo en VS Code), 5 renglones con `modelo`, `tokens_entrada`, `tokens_salida` y `latencia_s`.
+    **Qué deberías ver:** las 5 respuestas, cada una debajo de su `>`. En `logs/v01.jsonl` (abrilo en VS Code), 5 renglones con `modelo`, los tokens y `latencia_s`.
 
 **Primer control · 10–15 min:** el log tiene modelo, tokens y latencia de tus 5 preguntas.
 
@@ -100,14 +100,14 @@
 
     **Qué deberías ver:** una fila por configuración: tokens promedio y latencia mediana. El modelo que no existe sale con `NaN`: sin respuestas no hay tokens.
 
-5. **Decidí** con qué configuración te quedás y dejala puesta.
+5. **Tus llamadas, en la web:** con tres renglones más en tu `.env`, cada llamada aparece en LangSmith (gratis) con los mensajes, la respuesta, los tokens y el tiempo, sin cambiar código. Cómo: guía 2 (en el aula virtual). Compará una con su renglón del log.
+6. **Decidí** con qué configuración te quedás y dejala puesta.
 
 ## Controles
 
 - Las dos configuraciones, con las mismas 5 preguntas: cambia una sola cosa.
 - El log tiene las 10 preguntas y los errores del experimento.
 - `.env` **no** aparece en los cambios de GitHub Desktop (`logs/` tampoco: no se sube).
-- ¿Una gana por poco en latencia? Corré de nuevo: la primera llamada suele tardar más.
 
 ## Resultado probado
 
@@ -118,7 +118,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): la tabla, qué configuración elegiste y por qué, qué quedó en el log con el modelo que no existe (¿sirvió el reintento?) y el costo del «Para casa». *Commit* («v0.1: …») y *push*.
+En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mié 4/11, 23:59): la tabla, qué configuración elegiste y por qué, qué quedó en el log con el modelo que no existe (¿sirvió el reintento?) y el costo del «Para casa». *Commit* («v0.1: …») y *push*.
 
 ## Para casa
 

@@ -108,7 +108,7 @@ RAG es filtrar antes del reporte: primero un `WHERE` que trae los fragmentos má
 
 ## Evidencia
 
-En `evidencia/v0.2.md`, entrega de avance 2 (hasta el mar 10/11, 23:59): la tabla, **un fallo clasificado** y tu tamaño de fragmento **justificado**. Subí `v02_rag.py`, `medir.py` y tu suite: *commit* («v0.2: …») y *push*.
+En `evidencia/v0.2.md`, entrega de avance 2 (hasta el mié 11/11, 23:59): la tabla, **un fallo clasificado** y tu tamaño de fragmento **justificado**. Subí `v02_rag.py`, `medir.py` y tu suite: *commit* («v0.2: …») y *push*.
 
 ## Para casa
 

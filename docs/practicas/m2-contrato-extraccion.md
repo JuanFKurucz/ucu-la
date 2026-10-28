@@ -116,7 +116,7 @@ Las tres métricas son una validación de carga, como las que hacés en BI:
 
 ## Evidencia
 
-En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): tabla, cambio, texto 7, **decisión** (con qué forma de pedir te quedás) y **límite** (un error que tus métricas no ven). Subí también `m2_extraccion.py`.
+En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mié 4/11, 23:59): tabla, cambio, texto 7, **decisión** (con qué forma de pedir te quedás) y **límite** (un error que tus métricas no ven). Subí también `m2_extraccion.py`.
 
 ## Para casa
 

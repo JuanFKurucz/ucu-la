@@ -98,7 +98,7 @@ Un agente es un flujo de Power Automate donde la condición la decide el modelo:
 
 ## Evidencia
 
-En `evidencia/v0.4.md`, entrega de avance 3 (hasta el mar 17/11, 23:59): tabla, **matriz**, tu cambio y la web caída. Declará la web grabada. Subí `v04_agente.py`, `medir.py` y tu suite.
+En `evidencia/v0.4.md`, entrega de avance 3 (hasta el mié 18/11, 23:59): tabla, **matriz**, tu cambio y la web caída. Declará la web grabada. Subí `v04_agente.py`, `medir.py` y tu suite.
 
 ## Para casa
 

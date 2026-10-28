@@ -103,7 +103,7 @@ Tu test de hilos: la demo con tus preguntas y el paso 5.
 
 ## Evidencia
 
-En `evidencia/v0.3.md`, entrega de avance 3 (hasta el mar 17/11, 23:59): tabla, test de hilos, diferencias y una **nota de decisión** de 3 líneas.
+En `evidencia/v0.3.md`, entrega de avance 3 (hasta el mié 18/11, 23:59): tabla, test de hilos, diferencias y una **nota de decisión** de 3 líneas.
 
 ## Para casa
 
