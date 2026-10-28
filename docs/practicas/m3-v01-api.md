@@ -16,14 +16,14 @@
 
 ## Punto de partida
 
-- **Tu repo** del proyecto ([plantilla](https://github.com/JuanFKurucz/ucu-la-project)). Creás `v01_api.py` en la carpeta del proyecto, al lado de `llm.py`.
+- **Tu repo** del proyecto ([plantilla](https://github.com/JuanFKurucz/ucu-la-project)). Creás `v01_api.py` al lado de `llm.py`.
 - **El contrato** (README de tu repo): `responder(pregunta)` devuelve un `dict` con `respuesta`, `tokens_entrada`, `tokens_salida` y `latencia_s`; cada pregunta deja un renglón en `logs/v01.jsonl`.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
-- **Con tu asistente de IA** (el que usás para programar): pegale cada paso y pedile «explicame cada renglón y dónde va en mi archivo». Corré, compará con «Qué deberías ver» y, si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.
+- **Con tu asistente de IA** (el que usás para programar): pegale cada paso y pedile «explicame cada renglón». Si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.
 
 ## Arranque
 
-1. **Las perillas.** Arriba de todo, el mensaje del sistema y tus preguntas: cambiá las de ejemplo por **5 de tu tema**, entre comillas y con coma.
+1. **Las perillas.** Arriba de todo: en `SISTEMA`, de qué se ocupa tu asistente (si querés, con datos de tu tema pegados: horarios, fechas); en `PREGUNTAS`, **5 de tu tema** que se respondan con eso, entre comillas y con coma. Lo que no le diste, no lo sabe.
 
     ```python
     import json, os, time
@@ -119,7 +119,7 @@
 
 ## Evidencia
 
-En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): la tabla, qué configuración elegiste y por qué, qué quedó en el log con el modelo que no existe (¿sirvió el reintento?) y el costo del «Para casa». Subí `v01_api.py` y `tabla.py`: *commit* («v0.1: …») y *push*.
+En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mar 3/11, 23:59): la tabla, qué configuración elegiste y por qué, qué quedó en el log con el modelo que no existe (¿sirvió el reintento?) y el costo del «Para casa». *Commit* («v0.1: …») y *push*.
 
 ## Para casa
 
