@@ -17,7 +17,7 @@
 ## Punto de partida
 
 - **Tu repo** del proyecto ([plantilla](https://github.com/JuanFKurucz/ucu-la-project)). Creás `v02_rag.py` en la carpeta del proyecto.
-- **Documentos:** 5 de ejemplo en `corpus/` y 13 preguntas de prueba en `datos/m4_suite.jsonl`. ¿Tu repo es de antes del 4/11? Bajalos de la plantilla (*Download raw file*) a las mismas carpetas.
+- **Documentos:** 5 de ejemplo en `corpus/` y 13 preguntas de prueba en `datos/m4_suite.jsonl`. ¿No están en tu repo? Bajalos de la plantilla (*Download raw file*) a las mismas carpetas.
 - **El contrato:** `responder(pregunta)` devuelve lo de v0.1 más `fuentes`, los documentos que usó.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 - **Con tu asistente de IA:** pegale cada paso y pedile «explicame cada renglón». Si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.

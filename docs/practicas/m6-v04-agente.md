@@ -16,74 +16,94 @@
 
 ## Punto de partida
 
-- **Archivos:** `herramientas.py` y `v04_agente.py`.
-- **Decidís:** descripciones, `SISTEMA`, límites y `web` en `config.toml`.
-- **En `herramientas.py`:** tus `CHUNK`, `OVERLAP` y `K` de M4 (de fábrica, acá `K` viene en 3 y en `v02_rag.py`, en 4); el agente ve los primeros 600 caracteres de cada fragmento.
-- **Datos:** `datos/m6_seleccion.jsonl`, 12 preguntas con su herramienta esperada.
+- **Tu repo**, con `v02_rag.py` y `medir.py`. Creás `v04_agente.py`.
+- **De la plantilla:** `herramientas.py` (`buscar_web` y `calcular`, listas) y `datos/m6_seleccion.jsonl` (12 preguntas con la herramienta esperada). ¿No están en tu repo? Bajalos de la plantilla (*Download raw file*) a las mismas carpetas.
+- **El contrato:** `responder(pregunta)` devuelve lo de v0.2 más `herramientas`, las que pidió.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
+- **Con tu asistente de IA:** pegale cada paso y pedile «explicame cada renglón».
+
+Un agente es un flujo de Power Automate donde la condición la decide el modelo: lee la pregunta y la descripción de cada herramienta, pide una (o ninguna), lee el resultado y vuelve a decidir.
 
 ## Arranque
 
-1. `uv run python herramientas.py`. **Qué deberías ver:** `25`, un fragmento, un resultado web grabado y lo que el modelo ve de cada herramienta.
-2. Corré:
+1. **Lo que el modelo ve:** `uv run python herramientas.py`. **Qué deberías ver:** `25`, un resultado web grabado y el nombre, los parámetros y la descripción de cada herramienta. El modelo elige solo con eso.
+2. **Tu herramienta.** En `v04_agente.py`, `@tool` vuelve tu `buscar` de M4 una herramienta; su descripción es lo que el modelo lee:
 
-    ```bash
-    uv run python v04_agente.py
+    ```python
+    from langchain.agents import create_agent
+    from langchain.agents.middleware import ModelCallLimitMiddleware
+    from langchain.tools import tool
+    from herramientas import Medidor, buscar_web, calcular  # vienen en la plantilla
+    from v02_rag import buscar, modelo  # tu búsqueda y tu modelo de M4
+    @tool
+    def buscar_documentos(consulta: str) -> str:
+       """Busca en mis documentos sobre LangGraph y LangChain."""  # poné tu tema
+       return "\n\n".join(f"[{h['doc']}]\n{h['texto'][:600]}" for h in buscar(consulta))
     ```
 
-    **Qué deberías ver:** `herramientas=[…]`, `llamadas=2` y la respuesta, por pregunta.
+3. **El agente**, con un tope de llamadas en código (no en el prompt). `Medidor` mira cada llamada y cada herramienta, como el monitor de rendimiento de Power BI:
 
-**Primer control · 10–15 min:** ves qué herramienta pidió en cada pregunta.
+    ```python
+    SISTEMA = ("Usá buscar_documentos para LangGraph y LangChain, buscar_web para lo reciente o externo y calcular para "
+              "cualquier cuenta. Si una herramienta devuelve ERROR, decilo y no inventes. Respondé en español, breve.")
+    agente = create_agent(modelo, tools=[buscar_documentos, buscar_web, calcular], system_prompt=SISTEMA,
+                         middleware=[ModelCallLimitMiddleware(run_limit=6)])  # hasta 6 llamadas por pregunta
+    def responder(pregunta: str) -> dict:
+       medidor = Medidor()  # cuenta llamadas, herramientas, documentos, tokens y segundos
+       mensajes = agente.invoke({"messages": [("user", pregunta)]}, {"callbacks": [medidor]})["messages"]
+       return {"respuesta": mensajes[-1].text, **medidor.resumen()}
+    if __name__ == "__main__": print(responder("¿Qué hace interrupt() en LangGraph?"))
+    ```
+
+    Corré `uv run python v04_agente.py`. **Qué deberías ver:** `'herramientas': ['buscar_documentos']`, `'llamadas': 2` (pide; lee y responde) y la respuesta.
+
+**Primer control · 10–15 min:** ves qué herramienta pidió.
 
 ## En clase
 
-1. **Tu tema:** la descripción de `buscar_documentos` y el `SISTEMA`.
+1. **Tu tema:** en la descripción de `buscar_documentos` y en `SISTEMA`, cambiá «LangGraph y LangChain» por el tuyo.
 
-    ![La herramienta buscar_documentos de herramientas.py, abreviada: @tool la vuelve herramienta; el modelo ve el nombre, los tipos y la descripción, que se reescribe con tu tema](../assets/herramienta-descripcion.svg)
+    ![La herramienta buscar_documentos, abreviada: @tool la vuelve herramienta; el modelo ve el nombre, los tipos y la descripción, que se reescribe con tu tema](../assets/herramienta-descripcion.svg)
 
-2. **Tu suite:** `datos/mi_seleccion.jsonl`, unas 10 preguntas.
-    Al menos una de cada `tipo`: `corpus` (tus documentos), `web`, `calculo`, `ninguna` (un saludo) y `combinada`.
-    Ninguna es `[]`; combinada, con las dos:
+2. **Medí la elección** con `web = "grabada"` en `config.toml` (mide la elección, no la respuesta). `medir.py` queda así:
 
-    ```json
-    {"id": 9, "tipo": "ninguna", "pregunta": "Hola", "esperado": "Saludo", "herramientas": []}
-    {"id": 10, "tipo": "combinada", "pregunta": "¿Cuántas cuotas dice el reglamento? Multiplicá por 12.", "esperado": "…", "herramientas": ["buscar_documentos", "calcular"]}
+    ```python
+    import json, pandas as pd, v04_agente
+    suite = [json.loads(linea) for linea in open("datos/m6_seleccion.jsonl", encoding="utf-8") if linea.strip()]
+    tabla = pd.DataFrame([{**caso, "esperadas": caso["herramientas"], **v04_agente.responder(caso["pregunta"])} for caso in suite])
+    tabla["eligio_bien"] = [set(e) == set(h) for e, h in zip(tabla["esperadas"], tabla["herramientas"])]
+    print(tabla[["id", "tipo", "eligio_bien", "herramientas", "llamadas"]].to_string())
     ```
 
-3. **Predecí** en cuáles se confunde.
-4. **Medí** con `web = "grabada"` (mide la elección, no la respuesta):
+    **Qué deberías ver:** una fila por pregunta. Cada `False` es una casilla de tu matriz de confusión: qué esperabas y qué pidió.
 
-    ```bash
-    uv run python suite.py v04_agente:responder datos/mi_seleccion.jsonl --tag v04-a
-    ```
-
-    **Qué deberías ver:** `v04-a: selección 7/10 · llamadas/consulta 2.4 · …`. En el CSV, `herramientas_esperadas` vs `herramientas` es tu matriz.
-
-5. **UNA cosa** (descripción, `SISTEMA`, límite o modelo) y `--tag v04-b`.
-6. **Fallá a propósito:** `web = "caida"` y `uv run python v04_agente.py "¿Cuál es la última versión de LangGraph?"`. ¿Avisa o inventa? ¿Pidió `buscar_web`? Volvé a `web = "real"`.
+3. **Tu suite:** `datos/mi_seleccion.jsonl`, unas 10 preguntas, al menos una de cada `tipo`: `corpus` (tus documentos), `web`, `calculo`, `ninguna` (un saludo, con `"herramientas": []`) y `combinada` (con las dos, por ejemplo `["buscar_documentos", "calcular"]`). Cambiá el archivo en `medir.py`.
+4. **Predecí** en cuáles se confunde y medí (corrida **a**).
+5. **UNA cosa** (descripción, `SISTEMA`, tope o modelo) y medí de nuevo (corrida **b**).
+6. **Fallá a propósito:** `web = "caida"`, y en el último renglón la pregunta «¿Cuál es la última versión de LangGraph?». ¿Avisa o inventa? ¿Pidió `buscar_web`? Volvé a `web = "real"`.
 7. *Commit* («v0.4: …») y *Push*.
 
 ## Controles
 
 - Misma suite y modo de web en las dos corridas.
-- Ninguna pregunta pasa de `MAX_LLAMADAS_MODELO` (columna `llamadas`).
+- Ninguna pregunta pasa de 6 `llamadas`.
 - Ninguna herramienta escribe ni borra.
 
 ## Resultado probado
 
-| Corrida | Selección correcta | Llamadas por consulta | Qué cambié |
+| Corrida | Eligió bien | Llamadas por pregunta | Qué cambié |
 |---|---|---|---|
-| v04-a | | | (base) |
-| v04-b | | | |
+| a | | | (base) |
+| b | | | |
 
 ## Evidencia
 
-En `evidencia/v0.4.md`, entrega de avance 3 (hasta el mar 17/11, 23:59): tabla, **matriz**, tu cambio y la web caída. Declará la web grabada.
+En `evidencia/v0.4.md`, entrega de avance 3 (hasta el mar 17/11, 23:59): tabla, **matriz**, tu cambio y la web caída. Declará la web grabada. Subí `v04_agente.py`, `medir.py` y tu suite.
 
 ## Para casa
 
 - 3 preguntas **ambiguas** (`"tipo": "ambigua"`), con la herramienta que elegirías vos.
-- Correlas juntas con `v04_agente.py`: ¿eligió bien?
+- Medilas: ¿eligió bien?
 
 ## Microdefensa
 

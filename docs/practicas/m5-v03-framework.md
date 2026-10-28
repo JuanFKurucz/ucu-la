@@ -4,82 +4,98 @@
 |---|---|---|---|
 | M5 | 4 | 100 min | como copiloto: escribe con vos y vos lo explicás (A2) |
 
-**Entregás:** v0.3 en el repo, suite antes/después, test de hilos, nota de decisión.
+**Entregás:** v0.3 en el repo, medición antes/después, test de hilos, nota de decisión.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JuanFKurucz/ucu-la/blob/main/notebooks/m5_v03_memoria.ipynb) Abrir el cuaderno en Colab (para quien no tiene el entorno instalado).
 
 
 ## Objetivo
 
-- Tu RAG en LangChain **sin que empeore** (lo prueba la suite).
+- Tu RAG, ahora armado con LangChain, **sin que empeore** (lo mide `medir.py`).
 - Memoria por conversación, sin mezclar hilos. Es la **v0.3**.
 
 ## Punto de partida
 
-- **Archivos:** `v03_memoria.py` (mismo RAG, en LangChain, con memoria) y `v02_rag.py`. Mismas perillas.
+- **Tu repo**, con `v02_rag.py` y `medir.py` de M4. Creás `v03_memoria.py` en la misma carpeta.
+- **El contrato:** `responder(pregunta, hilo)` devuelve lo de v0.2 y recuerda lo dicho en el mismo `hilo`.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
+- **Con tu asistente de IA:** pegale cada paso y pedile «explicame cada renglón». Cada renglón lo tenés que poder explicar.
+
+El hilo es como la clave de un cliente en una tabla de ventas: cada mensaje se guarda con su clave, y el modelo ve solo los de la misma (un `WHERE hilo = 'A'`).
 
 ## Arranque
 
-1. Corré:
+1. **El mismo RAG, con LangChain.** `create_agent` arma el ciclo «mensajes → modelo → respuesta»; `con_contexto` corre antes de cada llamada y suma lo que trajo tu `buscar`; `InMemorySaver` guarda cada hilo.
 
-    ```bash
-    uv run python v03_memoria.py
+    ```python
+    import time, uuid
+    from langchain.agents import create_agent
+    from langchain.agents.middleware import ModelRequest, dynamic_prompt
+    from langgraph.checkpoint.memory import InMemorySaver
+    from llm import cargar_modelo
+    from v02_rag import SISTEMA, buscar  # tu búsqueda de M4, sin cambios
+    fuentes = []  # los documentos de la última búsqueda
+    @dynamic_prompt
+    def con_contexto(pedido: ModelRequest) -> str:  # corre antes de cada llamada al modelo
+       hits = buscar(pedido.messages[-1].text)  # busca solo con el último mensaje
+       fuentes[:] = dict.fromkeys(h["doc"] for h in hits)
+       contexto = "\n\n".join(f"[{h['doc']}]\n{h['texto']}" for h in hits)
+       return f"{SISTEMA}\n\nContexto:\n{contexto}"
+    asistente = create_agent(cargar_modelo(), tools=[], middleware=[con_contexto], checkpointer=InMemorySaver())
     ```
 
-2. **Qué deberías ver:** tres respuestas y `Mensajes guardados → hilo A: 4 · hilo B: 2`. Las respuestas varían; la prueba de memoria es la cuenta.
+2. **Responder dentro de un hilo**, y una demo que solo corre desde la terminal (no cuando `medir.py` importa el archivo):
+
+    ```python
+    def responder(pregunta: str, hilo: str = "") -> dict:  # sin hilo, una conversación nueva
+       inicio, config = time.perf_counter(), {"configurable": {"thread_id": hilo or uuid.uuid4().hex}}
+       ultimo = asistente.invoke({"messages": [("user", pregunta)]}, config)["messages"][-1]
+       return {"respuesta": ultimo.text, "fuentes": list(fuentes), "latencia_s": round(time.perf_counter() - inicio, 2),
+               "tokens_entrada": ultimo.usage_metadata["input_tokens"], "tokens_salida": ultimo.usage_metadata["output_tokens"]}
+    def mensajes_guardados(hilo):  # cuántos mensajes guardó ese hilo
+       return len(asistente.get_state({"configurable": {"thread_id": hilo}}).values.get("messages", []))
+    if __name__ == "__main__":
+       print(responder("¿Qué guarda un checkpointer en LangGraph?", "A")["respuesta"])
+       print(responder("¿Y qué pasa con eso si se reinicia el proceso?", "A")["respuesta"])
+       print(responder("¿Y qué pasa con eso si se reinicia el proceso?", "B")["respuesta"])
+       print("hilo A:", mensajes_guardados("A"), "· hilo B:", mensajes_guardados("B"))
+    ```
+
+    Corré `uv run python v03_memoria.py`. **Qué deberías ver:** tres respuestas y `hilo A: 4 · hilo B: 2`. Las respuestas varían; la prueba de memoria es la cuenta (cada turno guarda tu pregunta y la respuesta).
 
 **Primer control · 10–15 min:** «hilo A: 4 · hilo B: 2».
 
 ## En clase
 
-1. **Predecí:** de `v02` a `v03`, ¿la suite cambia?
-2. **Antes y después:**
-
-    ```bash
-    uv run python suite.py v02_rag:con_rag datos/mi_suite.jsonl --tag v02
-    uv run python suite.py v03_memoria:con_rag datos/mi_suite.jsonl --tag v03
-    ```
-
-    **Qué deberías ver:** el `hit` suele dar igual (ejemplo: 10/11 en las dos).
-
-3. **Cada diferencia:** mirá `correcta` en los dos CSV. Para ver qué fuentes cambiaron, guardá este código como `compara.py` en la carpeta del proyecto y corré `uv run python compara.py`:
-
-    ```python
-    import pandas as pd
-    leer = dict(sep=None, engine="python", encoding="utf-8-sig", encoding_errors="replace", keep_default_na=False)  # «;» y ANSI de Excel
-    a = pd.read_csv("logs/suite-v02.csv", **leer)
-    b = pd.read_csv("logs/suite-v03.csv", **leer)
-    c = a.merge(b, on="id", suffixes=("_v02", "_v03"))
-    print(c[c["fuentes_v02"] != c["fuentes_v03"]][["id", "fuentes_v02", "fuentes_v03"]])
-    ```
-
-4. **Tu conversación:** al final de `v03_memoria.py`, cambiá el texto de los `preguntar(…)` por una pregunta tuya y un seguimiento que la **necesite** (en `"B"`, el mismo seguimiento).
+1. **Predecí:** de v0.2 a v0.3, ¿el hit cambia?
+2. **Medí:** en `medir.py`, cambiá `v02_rag` por `v03_memoria` (las dos veces) y corré `uv run python medir.py`, con tu suite. **Qué deberías ver:** el mismo hit que en M4 (con la suite de ejemplo, 10 de 11): la búsqueda es la misma.
+3. **Cada diferencia:** buscá en las dos tablas las preguntas con otra respuesta. El contexto ahora llega en las instrucciones, no junto a la pregunta: ¿eso cambió algo?
+4. **Tu conversación:** en la demo, cambiá las preguntas por una tuya y un seguimiento que la **necesite** (en `"B"`, el mismo seguimiento).
 
     ![El final de v03_memoria.py, abreviado: tu pregunta y un seguimiento que la necesite en el hilo A, el mismo seguimiento en el hilo B y la prueba de que B no guarda lo de A](../assets/conversacion-hilos.svg)
 
-5. **Aislamiento:** sumá al final, con 4 espacios de sangría, y corré:
+5. **Aislamiento:** sumá al final de la demo, con 4 espacios de sangría, y corré:
 
     ```python
-       print(preguntar("otra pregunta de tu tema", "B"))
-       print(mensajes_guardados("A"), mensajes_guardados("B"))
+       print(responder("otra pregunta de tu tema", "B")["respuesta"])
+       print("hilo A:", mensajes_guardados("A"), "· hilo B:", mensajes_guardados("B"))
     ```
 
-    **Qué deberías ver:** con la demo original, `4 4`.
+    **Qué deberías ver:** al final, `hilo A: 4 · hilo B: 4`. B creció; A no se enteró.
 
 6. *Commit* («v0.3: …») y *Push*.
 
 ## Controles
 
-- Misma suite, modelo y perillas.
+- Misma suite, modelo y perillas que en M4.
 - Pregunta y seguimiento en el mismo hilo.
 - B no ve nada de A.
 
 ## Resultado probado
 
-Tu test de hilos (la demo con tus preguntas y el paso 5). Sin gastar: `uv run pytest tests/test_memoria.py` (`3 passed`).
+Tu test de hilos: la demo con tus preguntas y el paso 5.
 
-| Versión | Hit | Abstención correcta | Correctas | Latencia (mediana) |
+| Versión | Hit | NO ENCONTRADO bien | Correctas (tu juicio) | Latencia (mediana) |
 |---|---|---|---|---|
 | v0.2 | | | | |
 | v0.3 | | | | |
@@ -90,6 +106,7 @@ En `evidencia/v0.3.md`, entrega de avance 3 (hasta el mar 17/11, 23:59): tabla, 
 
 ## Para casa
 
+- El seguimiento busca solo con el último mensaje: mirá sus `fuentes`. ¿Trajo lo que hacía falta?
 - Alargá una conversación hasta 10 turnos o hasta que moleste: ¿cuántos aguantó?
 - ¿Últimos mensajes (`trim_messages`) o resumen (`SummarizationMiddleware`)? Decidí y justificá, sin programarlo.
 
