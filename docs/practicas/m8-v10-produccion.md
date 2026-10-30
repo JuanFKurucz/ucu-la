@@ -96,11 +96,11 @@ v1.0 es tu versión de siempre con lo que pide un tablero que usa gente real: un
 
 ## Evidencia
 
-En `evidencia/v1.0.md`, después al registro de evaluación: traza, costo con fecha, test y decisión.
+En `evidencia/v1.0.md`, después al registro de evaluación (`docs/registro-evaluacion.md` de tu repo): traza, costo con fecha, test y decisión.
 
 ## Para casa
 
-- La **lista de entrega** de la tarea «Entrega final» del aula virtual.
+- La **lista de entrega** de la guía 8 (también en la tarea «Entrega final» del aula virtual), y «Antes de entregar» del README de tu repo.
 - Los 4 entregables hasta el **domingo 22/11, 23:59**.
 
 ## Microdefensa

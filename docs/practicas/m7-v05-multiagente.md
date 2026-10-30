@@ -109,7 +109,7 @@ El grafo es un flujo de Power Automate escrito en código: cada `add_node` es un
 
 ## Evidencia
 
-En `evidencia/v0.5.md`, después al registro de evaluación: diagrama, aprobar y rechazar, tabla y **tu decisión** (si gana el agente solo, también vale).
+En `evidencia/v0.5.md`, después al registro de evaluación (`docs/registro-evaluacion.md` de tu repo): diagrama, aprobar y rechazar, tabla y **tu decisión** (si gana el agente solo, también vale).
 
 ## Para casa
 
