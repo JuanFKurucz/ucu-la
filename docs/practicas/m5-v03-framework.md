@@ -69,7 +69,7 @@ El hilo es como la clave de un cliente en una tabla de ventas: cada mensaje se g
 ## En clase
 
 1. **Predecí:** de v0.2 a v0.3, ¿el hit cambia?
-2. **Medí:** en `medir.py`, cambiá `v02_rag` por `v03_memoria` (las dos veces) y corré `uv run python medir.py`, con tu suite. **Qué deberías ver:** el mismo hit que en M4 (con la suite de ejemplo, 10 de 11): la búsqueda es la misma.
+2. **Medí:** en `medir.py`, cambiá `v02_rag` por `v03_memoria` (en los dos lugares: el `import` y la llamada) y corré `uv run python medir.py`, con tu suite. **Qué deberías ver:** el mismo hit que en M4 (con la suite de ejemplo, 10 de 11): la búsqueda es la misma.
 3. **Cada diferencia:** buscá en las dos tablas las preguntas con otra respuesta. El contexto ahora llega en las instrucciones, no junto a la pregunta: ¿eso cambió algo?
 4. **Tu conversación:** en la demo, cambiá las preguntas por una tuya y un seguimiento que la **necesite** (en `"B"`, el mismo seguimiento).
 
