@@ -80,7 +80,7 @@ Un agente es un flujo de Power Automate donde la condición la decide el modelo:
 3. **Tu suite:** `datos/mi_seleccion.jsonl`, unas 10 preguntas, al menos una de cada `tipo`: `corpus` (tus documentos), `web`, `calculo`, `ninguna` (un saludo, con `"herramientas": []`) y `combinada` (con las dos, por ejemplo `["buscar_documentos", "calcular"]`). Cambiá el archivo en `medir.py`.
 4. **Predecí** en cuáles se confunde y medí (corrida **a**).
 5. **UNA cosa** (descripción, `SISTEMA`, tope o modelo) y medí de nuevo (corrida **b**).
-6. **Fallá a propósito:** `web = "caida"`, y en el último renglón la pregunta «¿Cuál es la última versión de LangGraph?». ¿Avisa o inventa? ¿Pidió `buscar_web`? Volvé a `web = "real"`.
+6. **Fallá a propósito:** `web = "caida"`, y en el último renglón de `v04_agente.py` (el `print` del final) cambiá la pregunta por «¿Cuál es la última versión de LangGraph?». ¿Avisa o inventa? ¿Pidió `buscar_web`? Volvé a `web = "real"`.
 7. *Commit* («v0.4: …») y *Push*.
 
 ## Controles
