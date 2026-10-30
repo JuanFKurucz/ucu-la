@@ -95,7 +95,7 @@ Las tres métricas son una validación de carga, como las que hacés en BI:
 2. **Línea de base:** sin ejemplos, como el modelo base en ML: primero medís sin tocar nada. Anotá las tres métricas.
 3. **Cambiá UNA cosa:**
     - **Few-shot:** 1 o 2 ejemplos inventados en `EJEMPLOS`, como `"«La ONG Sur plantó 300 árboles.» → entidad: ONG Sur, cifra: 300"`.
-    - **Molde:** mejor `description` de un campo.
+    - **Molde** (salida estructurada): mejor `description` de un campo.
     - **Instrucción:** `INSTRUCCION` más precisa.
 
 4. **Volvé a correr** y compará.
