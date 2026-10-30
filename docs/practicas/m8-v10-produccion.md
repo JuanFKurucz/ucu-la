@@ -61,14 +61,14 @@ v1.0 es tu versión de siempre con lo que pide un tablero que usa gente real: un
     def test_un_email_no_pasa():
        assert v10_produccion.tapar("soy ana.perez@ucu.edu.uy, ¿me ayudás?") == "soy [email], ¿me ayudás?"
     def test_si_falla_avisa(monkeypatch):
-       monkeypatch.setattr(v10_produccion.base, "responder", lambda pregunta: 1 / 0)  # simula una caída
+       monkeypatch.setattr(v10_produccion.base, "responder", lambda pregunta: 1 / 0)  # solo en este test: tu versión «se cae»
        assert "No pude responder" in v10_produccion.responder("hola")["respuesta"]
     ```
 
     **Qué deberías ver:** todos `passed`, ningún `failed`.
 
 2. **Tu peor fallo:** un test más, con un caso tuyo (otro dato personal, una pregunta que lo hizo inventar). ¿`failed`? Anotá qué no atrapa el guardrail.
-3. **Operá y costeá**, con `web = "grabada"`: en `medir.py`, cambiá tu versión por `v10_produccion` y sumá al final:
+3. **Operá y costeá**, con `web = "grabada"`: en `medir.py`, cambiá tu versión por `v10_produccion` (en el `import` y en la llamada) y sumá al final:
 
     ```python
     print("US$ por consulta:", tabla["costo_usd"].mean(), "· por mes:", tabla["costo_usd"].mean() * 1000 * 30)
