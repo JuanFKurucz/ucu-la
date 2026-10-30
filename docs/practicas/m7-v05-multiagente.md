@@ -90,8 +90,8 @@ El grafo es un flujo de Power Automate escrito en código: cada `add_node` es un
 
 **Clase 7 · aprobar y comparar**
 
-4. **Aprobar y rechazar:** con rechazo **no** hay respuesta. ¿Dónde lo ves en el dibujo?
-5. **Comparar con v0.4**, misma suite y web: `uv run python medir.py` con `v04_agente`, y otra vez cambiando `v04_agente` por `v05_equipo` (las dos veces). **Qué deberías ver:** la misma tabla; el equipo, con varias veces más `llamadas`.
+4. **Aprobar y rechazar:** con rechazo **no** hay respuesta. ¿Dónde lo ves: en el dibujo (`aprobar` siempre va al final) o en `responder` (devuelve `''` si no se aprobó)?
+5. **Comparar con v0.4**, misma suite y web: `uv run python medir.py` con `v04_agente`, y otra vez cambiando `v04_agente` por `v05_equipo` (en los dos lugares de `medir.py`: el `import` y la llamada). **Qué deberías ver:** la misma tabla; el equipo, con varias veces más `llamadas`.
 6. *Commit* («v0.5: …») y *Push*.
 
 ## Controles
