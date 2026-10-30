@@ -88,7 +88,7 @@
 
 1. **Predecí** y variá **una** cosa: `SISTEMA` corto vs con reglas («si no estás seguro, decí "no sé"»), o dos modelos (`model` en `config.toml`, por ejemplo `google_genai:gemini-3.1-flash-lite`).
 2. **Borrá** `logs/v01.jsonl` y corré una vez con cada configuración. Quedan 10 respuestas.
-3. **Un error a propósito:** en `config.toml` poné un modelo que no existe, `google_genai:gemini-que-no-existe`. **Predecí** qué queda en el log y corré. ¿Sirvió el reintento? Después volvé al modelo de antes.
+3. **Un error a propósito:** en `config.toml` poné un modelo que no existe, `google_genai:gemini-que-no-existe`. **Predecí** qué queda en el log (¿qué código HTTP?) y corré. ¿Sirvió el reintento? Después volvé al modelo de antes.
 4. **Compará:** guardá esto como `tabla.py` y corré `uv run python tabla.py`. Si variaste el `SISTEMA`, cambiá `"modelo"` por `"sistema"`:
 
     ```python
