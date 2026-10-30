@@ -90,7 +90,7 @@ RAG es filtrar antes del reporte: primero un `WHERE` que trae los fragmentos má
 2. **Sin documentos:** poné las mismas preguntas en `PREGUNTAS` de tu `v01_api.py` y corré. ¿Cuántas respondió bien sin buscar?
 3. **Tus documentos** a `corpus/` (los de ejemplo, a `corpus/ejemplo/`) y `datos/mi_suite.jsonl`: 10–20 preguntas como las de ejemplo, 2 sin respuesta y 1 adversarial. Cambiá el archivo en `medir.py`.
 4. **Cada fallo:** no llegó el fragmento → **recuperación**; llegó y respondió mal → **generación**.
-5. **Una perilla** (`CHUNK`, `OVERLAP` o `K`): predecí, cambiala y medí de nuevo.
+5. **Una perilla** (`CHUNK`, `OVERLAP` o `K`: el `chunk_size`, el `chunk_overlap` y el `k` de las slides): predecí, cambiala y medí de nuevo.
 
 ## Controles
 
