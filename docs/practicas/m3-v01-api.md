@@ -33,7 +33,7 @@
     modelo = cargar_modelo()  # el de config.toml
     ```
 
-    Corré `uv run python v01_api.py`. **Qué deberías ver:** nada, sin errores. Si falta la clave o algo está mal, `cargar_modelo()` te lo dice.
+    Corré `uv run python v01_api.py`. **Qué deberías ver:** nada, sin errores. Si falta algo, `cargar_modelo()` te lo dice.
 
 2. **`responder()`.** Abajo, la función: manda la pregunta, muestra la respuesta de a pedazos (*streaming*), los junta y mide.
 
@@ -128,7 +128,7 @@ costo por pregunta = tokens de entrada × precio de entrada / 1.000.000 + tokens
 
 costo por mes = costo por pregunta × 1000 × 30
 
-Sale en una planilla, una celda por término. En Python: `1_000_000`, `print(f"{costo:.7f}")`.
+Sale en una planilla, una celda por término. En Python: `1_000_000`; `print(f"{costo:.7f}")` evita que salga `1.2e-05`.
 
 ## Microdefensa
 
