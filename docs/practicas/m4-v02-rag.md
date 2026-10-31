@@ -22,7 +22,7 @@
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 - **Con tu asistente de IA:** pegale cada paso y pedile «explicame cada renglón». Si sale un error, pegáselo. Cada renglón lo tenés que poder explicar.
 
-RAG es filtrar antes del reporte: primero un `WHERE` que trae los fragmentos más parecidos a la pregunta; después, la respuesta con eso.
+RAG es consultar antes del reporte: primero un `SELECT TOP k … ORDER BY distancia`, que trae los fragmentos más parecidos a la pregunta (ordena, no filtra); después, la respuesta con eso.
 
 ## Arranque
 
