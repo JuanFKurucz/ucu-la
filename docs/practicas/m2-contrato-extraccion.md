@@ -120,7 +120,7 @@ En `evidencia/v0.1.md`, entrega de avance 1 (hasta el mié 4/11, 23:59): tabla, 
 
 ## Para casa
 
-- 5 textos **de tu tema** en `datos/mis_textos.jsonl`, uno por renglón y uno con `"cifra": null`:
+- 5 textos **de tu tema** en `datos/mis_textos.jsonl`, uno por renglón y uno sin cifra (`"cifra": null`, el `NULL` de SQL):
 
   `{"id": 1, "texto": "La cooperativa Las Acacias cerró 2025 con 1.250 socios.", "esperado": {"entidad": "Cooperativa Las Acacias", "cifra": 1250}}`
 
