@@ -13,6 +13,7 @@
 
 - Tu RAG, ahora armado con LangChain, **sin que empeore** (lo mide `medir.py`).
 - Memoria por conversación, sin mezclar hilos. Es la **v0.3**.
+- **Para qué te sirve:** que entienda «¿y por región?» después de «¿cómo se calcula el churn?», como un chat, sin mostrarle a un usuario la conversación de otro.
 
 ## Punto de partida
 
@@ -35,8 +36,8 @@ El hilo es como la clave de un cliente en una tabla de ventas: cada mensaje se g
     from llm import cargar_modelo
     from v02_rag import SISTEMA, buscar  # tu búsqueda de M4, sin cambios
     fuentes = []  # los documentos de la última búsqueda
-    @dynamic_prompt
-    def con_contexto(pedido: ModelRequest) -> str:  # corre antes de cada llamada al modelo
+    @dynamic_prompt  # la @ le entrega la función a LangChain: la corre antes de cada llamada al modelo
+    def con_contexto(pedido: ModelRequest) -> str:
        hits = buscar(pedido.messages[-1].text)  # busca solo con el último mensaje
        fuentes.clear()  # las de la pregunta anterior, fuera
        fuentes.extend(dict.fromkeys(h["doc"] for h in hits))  # cada documento una vez, como un DISTINCT
