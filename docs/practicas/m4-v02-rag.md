@@ -75,7 +75,7 @@ RAG es consultar antes del reporte: primero un `SELECT TOP k … ORDER BY distan
 
 ## En clase
 
-1. **Medir.** Guardá esto como `medir.py` y corré `uv run python medir.py`:
+1. **Medir.** Primero sacá los `print` de `v02_rag.py` (si no, corren al importarlo). Guardá esto como `medir.py` y corré `uv run python medir.py`:
 
     ```python
     import json, pandas as pd, v02_rag
@@ -85,10 +85,10 @@ RAG es consultar antes del reporte: primero un `SELECT TOP k … ORDER BY distan
     print(tabla[["id", "tipo", "hit", "respuesta"]].to_string())
     ```
 
-    Antes, sacá los `print` de `v02_rag.py`. **Hit**: ¿el documento correcto está entre los 4? Un *recall@4*. **Qué deberías ver:** una fila por pregunta; las 2 sin respuesta, con NO ENCONTRADO.
+    **Hit**: ¿el documento correcto está entre los 4? Un *recall@4*. **Qué deberías ver:** una fila por pregunta; las 2 sin respuesta, con NO ENCONTRADO.
 
 2. **Sin documentos:** poné las mismas preguntas en `PREGUNTAS` de tu `v01_api.py` y corré. ¿Cuántas respondió bien sin buscar?
-3. **Tus documentos** a `corpus/` (los de ejemplo, a `corpus/ejemplo/`) y `datos/mi_suite.jsonl`: 10–20 preguntas como las de ejemplo, 2 sin respuesta y 1 adversarial. Cambiá el archivo en `medir.py`.
+3. **Tus documentos** a `corpus/`, en `.md` o `.txt` (un PDF o un Word, pedile a tu asistente que lo pase a texto). Los de ejemplo, a `corpus/ejemplo/`, y borrá `.chroma` para que reindexe. Tu suite, en `datos/mi_suite.jsonl`: 10–20 preguntas, una por renglón, como `{"id": 1, "tipo": "documental", "pregunta": "…", "fuentes": ["reglamento"]}` (`fuentes`: el archivo sin la extensión). Incluí 2 sin respuesta (`"tipo": "sin_respuesta", "fuentes": []`) y 1 adversarial. Cambiá el archivo en `medir.py`.
 4. **Cada fallo:** no llegó el fragmento → **recuperación**; llegó y respondió mal → **generación**.
 5. **Una perilla** (`CHUNK`, `OVERLAP` o `K`: el `chunk_size`, el `chunk_overlap` y el `k` de las slides): predecí, cambiala y medí de nuevo.
 
