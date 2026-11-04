@@ -13,6 +13,7 @@
 
 - Evidencia para decidir si gente real podría usarlo: **traza**, **costo**, **protección con test** y una práctica de producción.
 - Es la **v1.0** (requisito 4).
+- **Para qué te sirve:** saber si lo podés dejar en manos de otros: cuánto cuesta cada respuesta, qué pasó en cada paso cuando falla (como el historial de un refresh de Power BI) y que tu peor error no se repita.
 
 ## Punto de partida
 

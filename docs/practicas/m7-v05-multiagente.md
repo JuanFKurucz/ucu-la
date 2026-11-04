@@ -13,6 +13,7 @@
 
 - Tu asistente como **equipo** (supervisor, investigador, analista, redactor), con **una persona que aprueba**.
 - Medir si el equipo vale lo que cuesta frente a `v0.4`. Es la **v0.5** (requisito 3).
+- **Para qué te sirve:** repartir un pedido grande como en un equipo de BI (uno busca, otro analiza, otro redacta) y que nada salga sin una firma, como un informe antes del directorio.
 
 ## Punto de partida
 

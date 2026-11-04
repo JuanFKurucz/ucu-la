@@ -13,6 +13,7 @@
 
 - Que tu asistente **elija bien**: documentos, internet o calculadora.
 - Que ante un fallo **lo diga en vez de inventar**. Es la **v0.4** (requisito 2).
+- **Para qué te sirve:** que para «¿cuánto creció el churn de marzo a abril?» busque la definición en tus documentos y use la calculadora, sin que le digas cuál.
 
 ## Punto de partida
 
