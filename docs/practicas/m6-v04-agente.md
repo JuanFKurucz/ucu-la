@@ -66,7 +66,7 @@ Un agente es un flujo de Power Automate donde la condición la decide el modelo:
 
     ![La herramienta buscar_documentos, abreviada: @tool la vuelve herramienta; el modelo ve el nombre, los tipos y la descripción, que se reescribe con tu tema](../assets/herramienta-descripcion.svg)
 
-2. **Medí la elección** con `web = "grabada"` en `config.toml` (mide la elección, no la respuesta). `medir.py` queda así:
+2. **Medí la elección** con `web = "grabada"` en `config.toml`: la web devuelve siempre la misma respuesta guardada, así mide la elección, no la respuesta. `medir.py` queda así:
 
     ```python
     import json, pandas as pd, v04_agente
@@ -78,7 +78,7 @@ Un agente es un flujo de Power Automate donde la condición la decide el modelo:
 
     **Qué deberías ver:** una fila por pregunta. Cada `False` es una casilla de tu matriz de confusión: qué esperabas y qué pidió.
 
-3. **Tu suite:** `datos/mi_seleccion.jsonl`, unas 10 preguntas, al menos una de cada `tipo`: `corpus` (tus documentos), `web`, `calculo`, `ninguna` (un saludo, con `"herramientas": []`) y `combinada` (con las dos, por ejemplo `["buscar_documentos", "calcular"]`). Cambiá el archivo en `medir.py`.
+3. **Tu suite:** `datos/mi_seleccion.jsonl`, unas 10 preguntas, una por renglón, como `{"id": 1, "tipo": "calculo", "pregunta": "¿Cuánto es el 15 % de 2400?", "herramientas": ["calcular"]}`. Al menos una de cada `tipo`: `corpus` (tus documentos), `web`, `calculo`, `ninguna` (un saludo, con `"herramientas": []`) y `combinada` (con las dos, por ejemplo `["buscar_documentos", "calcular"]`). Cambiá el archivo en `medir.py`.
 4. **Predecí** en cuáles se confunde y medí (corrida **a**).
 5. **UNA cosa** (descripción, `SISTEMA`, tope o modelo) y medí de nuevo (corrida **b**).
 6. **Fallá a propósito:** `web = "caida"`, y en el último renglón de `v04_agente.py` (el `print` del final) cambiá la pregunta por «¿Cuál es la última versión de LangGraph?». ¿Avisa o inventa? ¿Pidió `buscar_web`? Volvé a `web = "real"`.
