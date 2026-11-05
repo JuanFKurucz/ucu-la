@@ -49,6 +49,8 @@ v1.0 es tu versión de siempre con lo que pide un tablero que usa gente real: un
     if __name__ == "__main__": print(responder("¿Qué hace interrupt()? Respondeme a ana.perez@ucu.edu.uy"))
     ```
 
+    `re.sub(patrón, "[email]", texto)` es un `REGEXP_REPLACE` de SQL: el patrón describe «letras, @, dominio con puntos».
+
     Corré `uv run python v10_produccion.py`. **Qué deberías ver:** la respuesta con `costo_usd`. En `logs/traza.jsonl`, la última línea: la pregunta con `[email]`, las herramientas, los tokens y el costo.
 
 **Primer control · 10–15 min:** en la traza, ningún email y el costo de la consulta.
