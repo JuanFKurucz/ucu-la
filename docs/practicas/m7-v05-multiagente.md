@@ -84,13 +84,13 @@ El grafo es un flujo de Power Automate escrito en código: cada `add_node` es un
 
 ## En clase
 
-**Clase 6 · el equipo**
+**Clase 6, antes del recreo · el equipo**
 
 1. **Predecí:** ¿dónde gana el equipo? ¿Cuántas llamadas más?
 2. **Tu tema:** en la consigna del investigador, tu tema; en la demo, una pregunta que necesite investigar **y** calcular.
 3. **El recorrido:** pedile a tu asistente que `responder` devuelva también las `notas`. ¿Quién actuó, y en qué orden?
 
-**Clase 7 · aprobar y comparar**
+**Clase 6, después del recreo · aprobar y comparar**
 
 4. **Aprobar y rechazar:** con rechazo **no** hay respuesta. ¿Dónde lo ves: en el dibujo (`aprobar` siempre va al final) o en `responder` (devuelve `''` si no se aprobó)?
 5. **Comparar con v0.4**, misma suite y web: `uv run python medir.py` con `v04_agente`, y otra vez cambiando `v04_agente` por `v05_equipo` (en los dos lugares de `medir.py`: el `import` y la llamada). **Qué deberías ver:** la misma tabla; el equipo, con varias veces más `llamadas`.

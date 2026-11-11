@@ -2,7 +2,7 @@
 
 | Módulo | Clase | En clase | IA permitida |
 |---|---|---|---|
-| M5 | 4 | 100 min | como copiloto: escribe con vos y vos lo explicás (A2) |
+| M5 | 4 | 85 min | como copiloto: escribe con vos y vos lo explicás (A2) |
 
 **Entregás:** v0.3 en el repo, medición antes/después, test de hilos, nota de decisión.
 
