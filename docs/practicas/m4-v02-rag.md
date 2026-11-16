@@ -46,13 +46,13 @@ RAG es consultar antes del reporte: primero un `SELECT TOP k … ORDER BY distan
                for m, d, t in zip(r["metadatas"][0], r["distances"][0], r["documents"][0])]
     ```
 
-    Tres renglones para leer despacio, en SQL:
+    Leelo en SQL:
 
     - `upsert` es un `MERGE`: guarda cada fragmento con su id (`documento#número`), o lo actualiza si ya estaba.
     - `query(…, n_results=k)` es un `SELECT TOP k … ORDER BY distancia`: los k fragmentos más parecidos a la pregunta.
     - `zip(…)` junta tres listas que llegan por separado (documento, distancia, texto) fila a fila, como una tabla de tres columnas.
 
-    Agregá al final `print(buscar("¿Qué hace interrupt?"))` y corré `uv run python v02_rag.py`. **Qué deberías ver:** 4 fragmentos; el primero, de `langgraph__interrupts`. La primera vez baja el modelo de los vectores (unos 80 MB). Si cambiás o sacás un documento, borrá la carpeta `.chroma`.
+    Agregá al final `print(buscar("¿Qué hace interrupt?"))` y corré `uv run python v02_rag.py`. **Qué deberías ver:** 4 fragmentos; el primero, de `langgraph__interrupts`. La primera vez baja el modelo de los vectores (unos 80 MB). Si cambiás o sacás un documento, borrá `.chroma`.
 
 2. **Responder con fuentes.** Cambiá ese `print` por la función: busca, arma el contexto y le pide al modelo que responda solo con eso.
 
@@ -113,7 +113,7 @@ En `evidencia/v0.2.md`, entrega de avance 2 (hasta el mié 11/11, 23:59): la tab
 ## Para casa
 
 - 5 preguntas difíciles (con la respuesta en dos documentos, u otras palabras); con dos documentos, los dos en `fuentes`.
-- El hit cuenta si llega cualquiera de las esperadas: ¿llegaron las dos?
+- Al hit le alcanza una. Copiá su renglón como `tabla["todas"]`, con `<=` en vez de `&`: ¿llegaron las dos?
 
 ## Microdefensa
 
