@@ -107,7 +107,7 @@
 
 - Las dos configuraciones, con las mismas 5 preguntas: cambia una sola cosa.
 - El log tiene las 10 preguntas y los errores del experimento.
-- `.env` **no** aparece en los cambios de GitHub Desktop (`logs/` tampoco: no se sube).
+- `.env` **no** aparece en los cambios de GitHub Desktop (`logs/` **sí**: subilo).
 
 ## Resultado probado
 

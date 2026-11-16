@@ -21,6 +21,7 @@
 - **El contrato:** `responder(pregunta)` devuelve lo de v0.4 más `aprobada`: si la persona rechaza, no hay respuesta.
 - **¿Sin el entorno instalado?** Lo mismo en Colab: el botón «Open in Colab» de arriba.
 - **Con tu asistente de IA:** pegale cada paso y pedile «explicame cada renglón».
+- **Web y fallas:** `web = "grabada"` en `config.toml`, como en M6. Con `503`, esperá un minuto y repetí.
 
 El grafo es un flujo de Power Automate escrito en código: cada `add_node` es una caja y cada `add_edge`, una flecha. El **estado** es una fila que viaja de caja en caja; cada caja completa sus columnas.
 
@@ -111,7 +112,7 @@ El grafo es un flujo de Power Automate escrito en código: cada `add_node` es un
 
 ## Evidencia
 
-En `evidencia/v0.5.md`, después al registro de evaluación (`docs/registro-evaluacion.md` de tu repo): diagrama, aprobar y rechazar, tabla y **tu decisión** (si gana el agente solo, también vale).
+En `evidencia/v0.5.md`, después al registro de evaluación (`docs/registro-evaluacion.md` de tu repo): diagrama, aprobar y rechazar, tabla y **tu decisión** (si gana el agente solo, también vale). No se entrega hoy: va en la entrega final (dom 22/11, 23:59).
 
 ## Para casa
 
