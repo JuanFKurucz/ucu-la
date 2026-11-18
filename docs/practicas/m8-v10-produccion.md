@@ -80,7 +80,7 @@ v1.0 es tu versión de siempre con lo que pide un tablero que usa gente real: un
 
     Es un mes a 1000 por día. ¿Cuánto sería con tu uso real?
 
-4. **Tu práctica de producción** (una): trazas, costos, guardrail, caché o evaluación continua.
+4. **Tu práctica de producción** (una): trazas, costos, guardrail, caché o una suite más grande.
     Caché en tres líneas, arriba de `v10_produccion.py`: `from langchain_core.caches import InMemoryCache`, `from langchain_core.globals import set_llm_cache` y `set_llm_cache(InMemoryCache())`.
     Vive mientras corre el programa: repetí una pregunta y medí `latencia_s`.
 
